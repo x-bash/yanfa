@@ -1,6 +1,25 @@
 
+xrc param/v1
+
+dev(){
+    param <<A
+Subcommands:
+    init        "init"
+A
+
+    if [ -n "$PARAM_SUBCMD" ]; then
+        "dev_$PARAM_SUBCMD" ${1:+"$@"}
+    else
+        dev help
+    fi
+
+}
+
+
 dev_init(){
     local repo=${1:?Repo}
+
+    echo "Init project: $repo"
 
     dev_init_vscode
     dev_init_xcmd "$repo"
@@ -8,7 +27,21 @@ dev_init(){
     dev_init_license
 }
 
+dev_init_gitignore(){
+    mkdir -p .vscode
+    cat >.vscode/settings.json  <<A
+{
+    "files.defaultLanguage": "shellscript",
+    "files.associations": {
+        "*.json": "json",
+        "*.md": "markdown",
+        "*": "shellscript",
+    }
+}
+A
+}
 
+# TODO: vscode project
 dev_init_vscode(){
     mkdir -p .vscode
     cat >.vscode/settings.json  <<A
