@@ -2,6 +2,8 @@
 
 dev_init_xproj(){
 
+    echo "Initialize x project"
+
     local repo="${1:?Provide repo}"
 
     dev init vscode

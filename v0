@@ -1,39 +1,43 @@
 
 xrc param/v1
 
+# xrc dev/v
+. _v0/xcmd
+
 dev(){
     param <<A
-Subcommands:
+subcommand:
     init        "init"
 A
 
-    if [ -n "$PARAM_SUBCMD" ]; then
-        "dev_$PARAM_SUBCMD" ${1:+"$@"}
-    else
+    if [ -z "$PARAM_SUBCMD" ]; then
         dev help
+        return 0
     fi
+
+    echo "$@"
+
+    "dev_$PARAM_SUBCMD" "$@"
+    # "dev_$PARAM_SUBCMD" ${1:+$@}
 
 }
 
 dev_init(){
-
     param <<A
-Subcommands:
-    gitignore           "git ignore"
+subcommand:
+    gitignore|git       "git ignore"
     vscode              "git ignore"
     xcmd                "git ignore"
     license             "license"
-
+    xproj               "x project"
 A
 
-    local repo=${1:?Repo}
+    if [ -z "$PARAM_SUBCMD" ]; then
+        dev_init help
+        return 0
+    fi
 
-    echo "Init project: $repo"
-
-    dev_init_vscode
-    dev_init_xcmd "$repo"
-    dev_init_latest "$repo"
-    dev_init_license
+    "dev_init_$PARAM_SUBCMD" ${1:+"$@"}
 }
 
 # According projects
