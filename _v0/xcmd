@@ -1,0 +1,43 @@
+
+
+dev_init_xproj(){
+
+    local repo="${1:?Provide repo}"
+
+    dev init vscode
+    dev init git
+
+    dev_init_xproj_xcmd "$repo"
+    dev_init_xproj_latest "$repo"
+}
+
+dev_init_xproj_xcmd(){
+    mkdir -p .x-cmd
+
+    local repo=${1:?Repo}
+
+    cat >./.x-cmd/push  <<A
+#! /usr/bin/env bash
+
+git remote remove gitee 2>/dev/null
+git remote add gitee git@gitee.com:x-bash/$repo.git
+git push gitee
+
+git remote remove github 2>/dev/null
+git remote add github git@github.com:x-bash/$repo.git
+git push github
+A
+}
+
+dev_init_xproj_latest(){
+    local repo=${1:?Repo}
+
+    cat >./latest  <<A
+# shellcheck shell=sh
+
+# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
+# maintainer:   Li Junhao
+
+xrc $repo/v0
+A
+}

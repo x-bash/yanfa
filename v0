@@ -15,8 +15,17 @@ A
 
 }
 
-
 dev_init(){
+
+    param <<A
+Subcommands:
+    gitignore           "git ignore"
+    vscode              "git ignore"
+    xcmd                "git ignore"
+    license             "license"
+
+A
+
     local repo=${1:?Repo}
 
     echo "Init project: $repo"
@@ -27,21 +36,20 @@ dev_init(){
     dev_init_license
 }
 
+# According projects
 dev_init_gitignore(){
-    mkdir -p .vscode
-    cat >.vscode/settings.json  <<A
-{
-    "files.defaultLanguage": "shellscript",
-    "files.associations": {
-        "*.json": "json",
-        "*.md": "markdown",
-        "*": "shellscript",
-    }
-}
+    cat >.gitignore  <<A
+dist
+build
+bin
 A
+
+    # gitignore add
+    # gitignore append
 }
 
 # TODO: vscode project
+# According project
 dev_init_vscode(){
     mkdir -p .vscode
     cat >.vscode/settings.json  <<A
@@ -53,37 +61,6 @@ dev_init_vscode(){
         "*": "shellscript",
     }
 }
-A
-}
-
-dev_init_xcmd(){
-    mkdir -p .x-cmd
-
-    local repo=${1:?Repo}
-
-    cat >./.x-cmd/push  <<A
-#! /usr/bin/env bash
-
-git remote remove gitee 2>/dev/null
-git remote add gitee git@gitee.com:x-bash/$repo.git
-git push gitee
-
-git remote remove github 2>/dev/null
-git remote add github git@github.com:x-bash/$repo.git
-git push github
-A
-}
-
-dev_init_latest(){
-    local repo=${1:?Repo}
-
-    cat >./latest  <<A
-# shellcheck shell=sh
-
-# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
-# maintainer:   Li Junhao
-
-xrc $repo/v0
 A
 }
 
@@ -284,3 +261,7 @@ dev_init_license(){
 A
 }
 
+if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+    xrc advise/v0
+    advise dev
+fi
