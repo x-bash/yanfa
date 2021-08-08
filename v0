@@ -1,8 +1,7 @@
 
 xrc param/v1
 
-# xrc dev/v
-. _v0/xcmd
+xrc _v0/xproj
 
 dev(){
     param <<A
