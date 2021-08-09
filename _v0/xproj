@@ -4,7 +4,8 @@ dev_init_xproj(){
 
     echo "Initialize x project"
 
-    local repo="${1:-$(basename "$(pwd)")}"
+    local folder="${1:-$(pwd)}"
+    local repo="${2:-$(basename "$folder")}"
 
     dev init vscode
     dev init git
