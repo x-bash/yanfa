@@ -1,8 +1,6 @@
-
+# shellcheck shell=sh
 
 dev_init_xproj(){
-
-    
 
     local folder="${1:-$(pwd)}"
     local repo="${2:-$(basename "$folder")}"
