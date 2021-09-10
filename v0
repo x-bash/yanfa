@@ -75,15 +75,15 @@ dev_init_vscode(){
     "explicitFolding.rules": {
         "awk": [
             {
-                "beginRegex": "^\\s*#\\s*Section:?",
-                "endRegex": "^\\s*#\\s*EndSection",
+                "beginRegex": "^\\\\s*#\\\\s*Section:?",
+                "endRegex": "^\\\\s*#\\\\s*EndSection",
                 "autoFold": true
             }
         ],
         "shellscript": [
             {
-                "beginRegex": "^\\s*#\\s*Section:?",
-                "endRegex": "^\\s*#\\s*EndSection",
+                "beginRegex": "^\\\\s*#\\\\s*Section:?",
+                "endRegex": "^\\\\s*#\\\\s*EndSection",
                 "autoFold": true
             }
         ]
