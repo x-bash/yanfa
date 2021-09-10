@@ -5,25 +5,26 @@ xrc param/v0
 xrc dev/_v0/xproj
 
 dev(){
-    param <<A
+    param:dsl <<A
 subcommand:
     init        "init"
 A
+    param:run
 
-    if [ -z "$PARAM_SUBCMD" ]; then
+    if [ -z "${PARAM_SUBCMD}" ]; then
         dev help
         return 0
     fi
 
     echo "$@"
 
-    "dev_$PARAM_SUBCMD" "$@"
+    "dev_${PARAM_SUBCMD}" "$@"
     # "dev_$PARAM_SUBCMD" ${1:+$@}
 
 }
 
 dev_init(){
-    param <<A
+    param:dsl <<A
 subcommand:
     gitignore|git       "git ignore"
     vscode              "git ignore"
@@ -31,6 +32,7 @@ subcommand:
     license             "license"
     xproj               "x project"
 A
+    param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
         dev_init help
