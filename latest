@@ -1,6 +1,75 @@
 # shellcheck shell=sh
 
-# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
-# maintainer:   Li Junhao
+xrc param/v0
 
-xrc dev/v0
+xrc dev/_v0/xproj
+
+# git config --worktree --get-regexp "remote[a-z\.]+.url"
+
+dev(){
+    param:dsl <<A
+subcommand:
+    init        "init"
+    push        "push"
+    pull        "pull"
+A
+    param:run
+
+    if [ -z "${PARAM_SUBCMD}" ]; then
+        dev help
+        return 0
+    fi
+
+    echo "$@"
+
+    "dev_${PARAM_SUBCMD}" "$@"
+    # "dev_$PARAM_SUBCMD" ${1:+$@}
+
+}
+
+dev_init(){
+    param:dsl <<A
+subcommand:
+    gitignore|git       "git ignore"
+    vscode              "git ignore"
+    xcmd                "git ignore"
+    license             "license"
+    xproj               "x project"
+A
+    param:run
+
+    if [ -z "$PARAM_SUBCMD" ]; then
+        dev_init help
+        return 0
+    fi
+
+    "dev_init_$PARAM_SUBCMD" ${1:+"$@"}
+}
+
+# According projects
+dev_init_gitignore(){
+    cat >.gitignore  <<A
+dist
+build
+bin
+A
+
+    # gitignore add
+    # gitignore append
+}
+
+# TODO: vscode project
+# According project
+dev_init_vscode(){
+    mkdir -p .vscode
+    xrc cat dev/_v0/settings.json
+}
+
+dev_init_license(){
+    xrc cat dev/_v0/LICENSE
+}
+
+if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+    xrc advise/v0
+    advise dev
+fi
