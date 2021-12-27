@@ -107,7 +107,7 @@ ___x_cmd_dev_pkg_tar()(
 ___x_cmd_dev_pkg(){
 
     param:dsl <<A
-SUBCOMMANDS:
+subcommand:
     lsmod       "list module"
     mod         "add module"
     tgz         "compress modules of core/all/<special-release> into <name>.tgz"

@@ -5,9 +5,10 @@ ___x_cmd_dev_mod_geturl(){
 
     BEGIN { exit_code=1; }
     {
-        url=$1
-        if (match($1, (/(x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)) {
-            print substr($1, RSTART, RLENGTH)
+        url=$2
+        match(url, /x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)
+        if (RLENGTH > 0) {
+            print substr(url, RSTART, RLENGTH)
             exit_code=0
             exit(0)
         }
@@ -103,7 +104,7 @@ ___x_cmd_dev_mod_cpfile()(
 ___x_cmd_dev_mod(){
 
     param:dsl <<A
-SUBCOMMANDS:
+subcommand:
     pull        "pull module"
     push        "push module"
     lsfile      "ls file to p"

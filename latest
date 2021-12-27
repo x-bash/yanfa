@@ -1,4 +1,4 @@
-# shellcheck shell=sh
+# shellcheck shell=sh # xrc
 
 # author:       Li Junhao           l@x-cmd.com
 # maintainer:   Li Junhao
@@ -30,13 +30,13 @@ A
 }
 
 
-x alias pull="x dev pull"
-x alias push="x dev push"
+x alias pull="x dev mod pull"
+x alias push="x dev mod push"
 
-if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
-    xrc advise/v0
-    advise dev
-fi
+# if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+#     xrc advise/v0
+#     advise dev
+# fi
 
 if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
     ___x_cmd_dev "$@"
