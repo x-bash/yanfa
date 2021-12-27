@@ -1,5 +1,8 @@
 # shellcheck shell=sh
 
+# author:       Li Junhao           l@x-cmd.com
+# maintainer:   Li Junhao
+
 xrc param/v0
 
 xrc dev/_v0/xproj
