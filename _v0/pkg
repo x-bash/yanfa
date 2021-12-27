@@ -1,8 +1,9 @@
-#! /usr/bin/env xrc
+# shellcheck shell=sh disable=SC3043
 
-___x_cmd_pkg_lsmod_getfp(){
+___x_cmd_dev_pkg_lsmod_getfp(){
     local filename=modlist
-    local fp="$(pwd)/$filename"
+    local fp
+    fp="$(pwd)/$filename"
     [ -f "$fp" ] && printf "%s" "$fp" && return
 
     fp="$(x wsroot)/$filename"
@@ -11,9 +12,9 @@ ___x_cmd_pkg_lsmod_getfp(){
     return 1
 }
 
-___x_cmd_pkg_ls(){
+___x_cmd_dev_pkg_lsmod(){
     local fp
-    fp="$(___x_cmd_pkg_lsmod_getfp)" || {
+    fp="$(___x_cmd_dev_pkg_lsmod_getfp)" || {
         printf "Cannot find file modlist." >&2
         return
     }
@@ -29,7 +30,7 @@ ___x_cmd_pkg_ls(){
 
 }
 
-___x_cmd_pkg_add(){
+___x_cmd_dev_pkg_add(){
     local name="${1:?Provide module name}"
     # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
     local position="${2:-"https://gitee.com/x-bash/$name.git"}"
@@ -37,7 +38,7 @@ ___x_cmd_pkg_add(){
     git subtree add --prefix="mod/$name" "$position" "$branch" --squash
 }
 
-___x_cmd_pkg_pull(){
+___x_cmd_dev_pkg_pull(){
     local name="${1:?Provide module name}"
     # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
     local position="${2:-"https://gitee.com/x-bash/$name.git"}"
@@ -45,7 +46,7 @@ ___x_cmd_pkg_pull(){
     git subtree pull --prefix="mod/$name" "$position" "$branch" --squash
 }
 
-___x_cmd_pkg_mod(){
+___x_cmd_dev_pkg_mod(){
     local IFS
     local mod
     git prune
@@ -53,14 +54,14 @@ ___x_cmd_pkg_mod(){
     dev_mod_ls "$@" | \
     while read -r mod; do
         if [ -e "mod/$mod" ]; then
-            ___x_cmd_pkg_pull "$mod"
+            ___x_cmd_dev_pkg_pull "$mod"
         else
-            ___x_cmd_pkg_add "$mod"
+            ___x_cmd_dev_pkg_add "$mod"
         fi
     done
 }
 
-___x_cmd_pkg_lsfile(){
+___x_cmd_dev_pkg_lsfile(){
     cd "$(x wsroot)/mod" || return
 
     dev_mod_ls "$@" | (
@@ -71,7 +72,7 @@ ___x_cmd_pkg_lsfile(){
     )
 }
 
-___x_cmd_pkg_tgz()(
+___x_cmd_dev_pkg_tgz()(
     case "${1:-all}" in
         core)       scope=core ;;
         all)        scope=all ;;
@@ -87,7 +88,7 @@ ___x_cmd_pkg_tgz()(
         ls -alh "$WSROOT/dist/$scope.tgz"
 )
 
-___x_cmd_pkg_tar()(
+___x_cmd_dev_pkg_tar()(
     case "${1:-all}" in
         core)       scope=core ;;
         all)        scope=all ;;
@@ -103,26 +104,23 @@ ___x_cmd_pkg_tar()(
         ls -alh "$WSROOT/dist/$scope.tar"
 )
 
-___x_cmd_pkg_mod(){
+___x_cmd_dev_pkg(){
 
     param:dsl <<A
 SUBCOMMANDS:
-    mod         "module add or pull"
-    tar         "tar modules to core/all/<special-release>"
+    lsmod       "list module"
+    mod         "add module"
     tgz         "compress modules of core/all/<special-release> into <name>.tgz"
-    all         ""
-    lsfile    ""
+    tar         "add modules"
+    lsfile      ""
 A
     param:run
 
-    case "$PARAM_SUBCMD" in
-        add)        ___x_cmd_pkg_add "$@" ;;
-        pull)       ___x_cmd_pkg_pull "$@" ;;
-        update)     ___x_cmd_pkg_update "$@" ;;
-        tar)        ___x_cmd_pkg_tar "$@" ;;
-        tgz)        ___x_cmd_pkg_tar "$@" ;;
-        all|"")     ___x_cmd_pkg_update all ;;
-        *)          printf "Unknown subcmd: %s\n" "$PARAM_SUBCMD" >&2
-    esac
+    if [ -z "$PARAM_SUBCMD" ]; then
+        ___x_cmd_dev_pkg help
+        return 1
+    fi
+
+    "___x_cmd_dev_pkg_${PARAM_SUBCMD}" "$@"
 
 }
