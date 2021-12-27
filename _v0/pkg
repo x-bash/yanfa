@@ -45,7 +45,7 @@ ___x_cmd_pkg_pull(){
     git subtree pull --prefix="mod/$name" "$position" "$branch" --squash
 }
 
-___x_cmd_pkg_update(){
+___x_cmd_pkg_mod(){
     local IFS
     local mod
     git prune
@@ -53,37 +53,23 @@ ___x_cmd_pkg_update(){
     dev_mod_ls "$@" | \
     while read -r mod; do
         if [ -e "mod/$mod" ]; then
-            pull "$mod"
+            ___x_cmd_pkg_pull "$mod"
         else
-            add "$mod"
+            ___x_cmd_pkg_add "$mod"
         fi
     done
 }
 
-___x_cmd_pkg_allfile(){
+___x_cmd_pkg_lsfile(){
+    cd "$(x wsroot)/mod" || return
+
     dev_mod_ls "$@" | (
         cd "$(x wsroot)/mod" && \
         while read -r line; do
-            local i
-            for i in $line/latest $line/v* $line/_v*/* $line/_v*/**/* $line/third-party/* $line/third-party/*/.* $line/third-party/**/* $line/third-party/**/*/* $line/third-party/**/*/*/*; do
-                [[ "$i" == *_test* ]] && continue
-                [ -f "$i" ] && printf "%s\n" "$i"
-            done
+            x dev mod lsfile "$line"
         done
     )
 }
-
-___x_cmd_pkg_file()(
-    IFS="
-"
-
-    printf "%s\n" latest
-
-    cd "$(x wsroot)" || exit
-    for i in _v0/*; do
-        printf "%s\n" "$i"
-    done
-)
 
 ___x_cmd_pkg_tgz()(
     case "${1:-all}" in
@@ -121,14 +107,11 @@ ___x_cmd_pkg_mod(){
 
     param:dsl <<A
 SUBCOMMANDS:
-    add         "add module"
-    pull        "pull module"
-    update      "update module"
+    mod         "module add or pull"
     tar         "tar modules to core/all/<special-release>"
     tgz         "compress modules of core/all/<special-release> into <name>.tgz"
     all         ""
-    file        ""
-    allfile     ""
+    lsfile    ""
 A
     param:run
 

@@ -1,8 +1,6 @@
 #! /usr/bin/env xrc
 
-
-
-___x_cmd_dev_git_geturl(){
+___x_cmd_dev_mod_geturl(){
     git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
 
     BEGIN { exit_code=1; }
@@ -20,9 +18,9 @@ ___x_cmd_dev_git_geturl(){
     '
 }
 
-___x_cmd_dev_git_add_repo(){
+___x_cmd_dev_mod_add_source(){
     local url
-    url="$(___x_cmd_dev_git_geturl)" || return
+    url="$(___x_cmd_dev_mod_geturl)" || return
 
     git remote remove gitee 2>/dev/null
     git remote add gitee "git@gitee.com:$url"
@@ -31,8 +29,8 @@ ___x_cmd_dev_git_add_repo(){
     git remote add github "git@github.com:$url"
 }
 
-___x_cmd_dev_git_pull(){
-    ___x_cmd_dev_git_add_repo || return
+___x_cmd_dev_mod_pull(){
+    ___x_cmd_dev_mod_add_source || return
 
     local branch
     branch="${1:-"$(git branch --show-current)"}"
@@ -44,8 +42,8 @@ ___x_cmd_dev_git_pull(){
     fi
 }
 
-___x_cmd_dev_git_push(){
-    ___x_cmd_dev_git_add_repo || return
+___x_cmd_dev_mod_push(){
+    ___x_cmd_dev_mod_add_source || return
 
     local branch
     branch="${1:-"$(git branch --show-current)"}"
@@ -54,57 +52,50 @@ ___x_cmd_dev_git_push(){
     git push github "$branch"
 }
 
-___x_cmd_dev_git(){
-    param:dsl <<A
-SUBCOMMANDS:
-    pull        "pull repo"
-    push        "push repo"
-A
-    param:run
-
-    if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_dev_git help
-        return 1
-    fi
-
-    "___x_cmd_dev_git_$PARAM_SUBCMD" "$@"
-}
-
-___x_cmd_dev_mod_file()(
+___x_cmd_dev_mod_lsfile0()(
     IFS="
 "
 
-    printf "%s\n" latest
-
     cd "$(x wsroot)" || exit
-    for i in _v0/*; do
-        printf "%s\n" "$i"
+
+    local i
+    for i in \
+        latest v* _v*/* _v*/**/* \
+        third-party/* third-party/*/.* third-party/**/* third-party/**/*/* third-party/**/*/*/*
+    do
+        [ "$i" != "${i#*_test*}" ] && continue
+        [ -f "$i" ] && printf "%s\n" "$i"
     done
+)
+
+___x_cmd_dev_mod_lsfile()(
+
+    cd "${1:?Provide module}" || return
+
+    if [ -f "$(x wsroot)/lsfile" ]; then
+        # TODO: using engine to directly run the local file
+        x ws lsfile
+    else
+        ___x_cmd_dev_mod_lsfile0
+    fi
 )
 
 ___x_cmd_dev_mod(){
 
     param:dsl <<A
 SUBCOMMANDS:
-    add         "add module"
     pull        "pull module"
-    update      "update module"
-    tar         "tar modules to core/all/<special-release>"
-    tgz         "compress modules of core/all/<special-release> into <name>.tgz"
-    all         ""
-    file        ""
-    allfile     ""
+    push        "push module"
+    lsfile       "ls file to p"
+    lsfile0      "ls file to p"
 A
     param:run
 
-    case "$PARAM_SUBCMD" in
-        add)        ___x_cmd_dev_mod_add "$@" ;;
-        pull)       ___x_cmd_dev_mod_pull "$@" ;;
-        update)     ___x_cmd_dev_mod_update "$@" ;;
-        tar)        ___x_cmd_dev_mod_tar "$@" ;;
-        tgz)        ___x_cmd_dev_mod_tar "$@" ;;
-        all|"")     ___x_cmd_dev_mod_update all ;;
-        *)          printf "Unknown subcmd: %s\n" "$PARAM_SUBCMD" >&2
-    esac
+    if [ -z "$PARAM_SUBCMD" ]; then
+        ___x_cmd_dev_mod help
+        return 1
+    fi
+
+    "___x_cmd_dev_mod_$PARAM_SUBCMD" "$@"
 
 }
