@@ -69,14 +69,27 @@ ___x_cmd_dev_mod_lsfile0()(
 )
 
 ___x_cmd_dev_mod_lsfile()(
-
-    cd "${1:?Provide module}" || return
-
     if [ -f "$(x wsroot)/lsfile" ]; then
         # TODO: using engine to directly run the local file
         x ws lsfile
     else
         ___x_cmd_dev_mod_lsfile0
+    fi
+)
+
+___x_cmd_dev_mod_cpfile_tmp(){
+    local src="$2"
+    local dst="$1/$src"
+    mkdir -p "$(dirname "$dst")"
+    cp "$src" "$dst"
+}
+
+___x_cmd_dev_mod_cpfile()(
+    if [ -f "$(x wsroot)/cpfile" ]; then
+        # TODO: using engine to directly run the local file
+        x ws cpfile "$@"
+    else
+        ___x_cmd_dev_mod_lsfile | x arg1 ___x_cmd_dev_mod_cpfile_tmp "$HOME/.x-cmd/$(basename "$(x wsroot)")"
     fi
 )
 
@@ -86,8 +99,9 @@ ___x_cmd_dev_mod(){
 SUBCOMMANDS:
     pull        "pull module"
     push        "push module"
-    lsfile       "ls file to p"
-    lsfile0      "ls file to p"
+    lsfile      "ls file to p"
+    lsfile0     "ls file to p"
+    cpfile      "cp file to home folder"
 A
     param:run
 
