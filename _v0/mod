@@ -1,0 +1,131 @@
+#! /usr/bin/env xrc
+
+___x_cmd_dev_mod_lsmod_getfp(){
+    local filename=modlist
+    local fp="$(pwd)/$filename"
+    [ -f "$fp" ] && printf "%s" "$fp" && return
+
+    fp="$(x wsroot)/$filename"
+    [ -f "$fp" ] && printf "%s" "$fp" && return
+
+    return 1
+}
+
+dev_mod_ls(){
+    local fp
+    fp="$(___x_cmd_dev_mod_lsmod_getfp)" || {
+        printf "Cannot find file modlist." >&2
+        return
+    }
+
+    awk -v mode="${1:-all}" '
+($0!="")&&($0 !~ /[ ]*#/){
+    mod=$1
+    gsub(/^\+/, "", mod)
+    if (mode == "all") print mod
+    else if (mode == "core") { if ($1 ~ /^\+/) print mod }
+    else if (index(mode, mod) > 0) print mod
+}' <"$fp"
+
+}
+
+dev_mod_add(){
+    local name="${1:?Provide module name}"
+    # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
+    local position="${2:-"https://gitee.com/x-bash/$name.git"}"
+    local branch="${3:-main}"
+    git subtree add --prefix="mod/$name" "$position" "$branch" --squash
+}
+
+dev_mod_pull(){
+    local name="${1:?Provide module name}"
+    # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
+    local position="${2:-"https://gitee.com/x-bash/$name.git"}"
+    local branch="${3:-main}"
+    git subtree pull --prefix="mod/$name" "$position" "$branch" --squash
+}
+
+dev_mod_update(){
+    local IFS
+    local mod
+    git prune
+
+    dev_mod_ls "$@" | \
+    while read -r mod; do
+        if [ -e "mod/$mod" ]; then
+            pull "$mod"
+        else
+            add "$mod"
+        fi
+    done
+}
+
+dev_mod_lsfile(){
+    dev_mod_ls "$@" | (
+        cd "$(x wsroot)/mod" && \
+        while read -r line; do
+            local i
+            for i in $line/latest $line/v* $line/_v*/* $line/_v*/**/* $line/third-party/* $line/third-party/*/.* $line/third-party/**/* $line/third-party/**/*/* $line/third-party/**/*/*/*; do
+                [[ "$i" == *_test* ]] && continue
+                [ -f "$i" ] && printf "%s\n" "$i"
+            done
+        done
+    )
+}
+
+dev_mod_tgz()(
+    case "${1:-all}" in
+        core)       scope=core ;;
+        all)        scope=all ;;
+        *)          return 1 ;;
+    esac
+
+    WSROOT="$(x wsroot)"
+
+    cd "$WSROOT/mod" &&
+    mkdir -p "$WSROOT/dist" &&
+        eval "tar czvf $scope.tgz $(x lsfile "$scope" | tr '\n' ' ')" &&
+        mv $scope.tgz "$WSROOT/dist/$scope.tgz" &&
+        ls -alh "$WSROOT/dist/$scope.tgz"
+)
+
+dev_mod_tar()(
+    case "${1:-all}" in
+        core)       scope=core ;;
+        all)        scope=all ;;
+        *)          return 1 ;;
+    esac
+
+    WSROOT="$(x wsroot)"
+
+    cd "$WSROOT/mod" &&
+    mkdir -p "$WSROOT/dist" &&
+        eval "tar cvf $scope.tar $(x lsfile "$scope" | tr '\n' ' ')" &&
+        mv $scope.tar "$WSROOT/dist/$scope.tar" &&
+        ls -alh "$WSROOT/dist/$scope.tar"
+)
+
+dev_mod(){
+
+    param:dsl <<A
+SUBCOMMANDS:
+    add         "add module"
+    pull        "pull module"
+    update      "update module"
+    tar         "tar modules to core/all/<special-release>"
+    tgz         "compress modules of core/all/<special-release> into <name>.tgz"
+    all         ""
+A
+    param:run
+
+    case "$PARAM_SUBCMD" in
+        add)        dev_mod_add "$@" ;;
+        pull)       dev_mod_pull "$@" ;;
+        update)     dev_mod_update "$@" ;;
+        tar)        dev_mod_tar "$@" ;;
+        tgz)        dev_mod_tar "$@" ;;
+        all|"")     dev_mod_update all ;;
+        *)          printf "Unknown subcmd: %s\n" "$PARAM_SUBCMD" >&2
+    esac
+
+}
