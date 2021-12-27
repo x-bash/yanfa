@@ -1,76 +1,73 @@
 #! /usr/bin/env xrc
 
-___x_cmd_dev_mod_lsmod_getfp(){
-    local filename=modlist
-    local fp="$(pwd)/$filename"
-    [ -f "$fp" ] && printf "%s" "$fp" && return
 
-    fp="$(x wsroot)/$filename"
-    [ -f "$fp" ] && printf "%s" "$fp" && return
 
-    return 1
-}
+___x_cmd_dev_git_geturl(){
+    git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
 
-___x_cmd_dev_mod_ls(){
-    local fp
-    fp="$(___x_cmd_dev_mod_lsmod_getfp)" || {
-        printf "Cannot find file modlist." >&2
-        return
+    BEGIN { exit_code=1; }
+    {
+        url=$1
+        if (match($1, (/(x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)) {
+            print substr($1, RSTART, RLENGTH)
+            exit_code=0
+            exit(0)
+        }
     }
-
-    awk -v mode="${1:-all}" '
-($0!="")&&($0 !~ /[ ]*#/){
-    mod=$1
-    gsub(/^\+/, "", mod)
-    if (mode == "all") print mod
-    else if (mode == "core") { if ($1 ~ /^\+/) print mod }
-    else if (index(mode, mod) > 0) print mod
-}' <"$fp"
-
+    END{
+        exit(exit_code)
+    }
+    '
 }
 
-___x_cmd_dev_mod_add(){
-    local name="${1:?Provide module name}"
-    # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
-    local position="${2:-"https://gitee.com/x-bash/$name.git"}"
-    local branch="${3:-main}"
-    git subtree add --prefix="mod/$name" "$position" "$branch" --squash
+___x_cmd_dev_git_add_repo(){
+    local url
+    url="$(___x_cmd_dev_git_geturl)" || return
+
+    git remote remove gitee 2>/dev/null
+    git remote add gitee "git@gitee.com:$url"
+
+    git remote remove github 2>/dev/null
+    git remote add github "git@github.com:$url"
 }
 
-___x_cmd_dev_mod_pull(){
-    local name="${1:?Provide module name}"
-    # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
-    local position="${2:-"https://gitee.com/x-bash/$name.git"}"
-    local branch="${3:-main}"
-    git subtree pull --prefix="mod/$name" "$position" "$branch" --squash
+___x_cmd_dev_git_pull(){
+    ___x_cmd_dev_git_add_repo || return
+
+    local branch
+    branch="${1:-"$(git branch --show-current)"}"
+
+    if [ -z "$___X_CMD_IN_CHINA_NET" ]; then
+        git pull github "$branch"
+    else
+        git pull gitee "$branch"
+    fi
 }
 
-___x_cmd_dev_mod_update(){
-    local IFS
-    local mod
-    git prune
+___x_cmd_dev_git_push(){
+    ___x_cmd_dev_git_add_repo || return
 
-    dev_mod_ls "$@" | \
-    while read -r mod; do
-        if [ -e "mod/$mod" ]; then
-            pull "$mod"
-        else
-            add "$mod"
-        fi
-    done
+    local branch
+    branch="${1:-"$(git branch --show-current)"}"
+
+    git push gitee "$branch"
+    git push github "$branch"
 }
 
-___x_cmd_dev_mod_allfile(){
-    dev_mod_ls "$@" | (
-        cd "$(x wsroot)/mod" && \
-        while read -r line; do
-            local i
-            for i in $line/latest $line/v* $line/_v*/* $line/_v*/**/* $line/third-party/* $line/third-party/*/.* $line/third-party/**/* $line/third-party/**/*/* $line/third-party/**/*/*/*; do
-                [[ "$i" == *_test* ]] && continue
-                [ -f "$i" ] && printf "%s\n" "$i"
-            done
-        done
-    )
+___x_cmd_dev_git(){
+    param:dsl <<A
+SUBCOMMANDS:
+    pull        "pull repo"
+    push        "push repo"
+A
+    param:run
+
+    if [ -z "$PARAM_SUBCMD" ]; then
+        ___x_cmd_dev_git help
+        return 1
+    fi
+
+    "___x_cmd_dev_git_$PARAM_SUBCMD" "$@"
 }
 
 ___x_cmd_dev_mod_file()(
@@ -83,38 +80,6 @@ ___x_cmd_dev_mod_file()(
     for i in _v0/*; do
         printf "%s\n" "$i"
     done
-)
-
-___x_cmd_dev_mod_tgz()(
-    case "${1:-all}" in
-        core)       scope=core ;;
-        all)        scope=all ;;
-        *)          return 1 ;;
-    esac
-
-    WSROOT="$(x wsroot)"
-
-    cd "$WSROOT/mod" &&
-    mkdir -p "$WSROOT/dist" &&
-        eval "tar czvf $scope.tgz $(x lsfile "$scope" | tr '\n' ' ')" &&
-        mv $scope.tgz "$WSROOT/dist/$scope.tgz" &&
-        ls -alh "$WSROOT/dist/$scope.tgz"
-)
-
-___x_cmd_dev_mod_tar()(
-    case "${1:-all}" in
-        core)       scope=core ;;
-        all)        scope=all ;;
-        *)          return 1 ;;
-    esac
-
-    WSROOT="$(x wsroot)"
-
-    cd "$WSROOT/mod" &&
-    mkdir -p "$WSROOT/dist" &&
-        eval "tar cvf $scope.tar $(x lsfile "$scope" | tr '\n' ' ')" &&
-        mv $scope.tar "$WSROOT/dist/$scope.tar" &&
-        ls -alh "$WSROOT/dist/$scope.tar"
 )
 
 ___x_cmd_dev_mod(){
