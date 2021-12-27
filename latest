@@ -6,11 +6,13 @@
 xrc param/v0
 
 xrc dev/_v0/xproj
-xrc dev/_v0/gitutils
+xrc dev/_v0/mod
+xrc dev/_v0/pkg
+xrc dev/_v0/init
 
 # git config --worktree --get-regexp "remote[a-z\.]+.url"
 
-dev(){
+___x_cmd_dev(){
     param:dsl <<A
 subcommand:
     init        "init"
@@ -20,15 +22,11 @@ A
     param:run
 
     if [ -z "${PARAM_SUBCMD}" ]; then
-        dev help
+        ___x_cmd_dev help
         return 0
     fi
 
-    echo "$@"
-
     "___x_cmd_dev_${PARAM_SUBCMD}" "$@"
-    # "___x_cmd_dev_$PARAM_SUBCMD" ${1:+$@}
-
 }
 
 
@@ -38,4 +36,8 @@ x alias push="x dev push"
 if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
     xrc advise/v0
     advise dev
+fi
+
+if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
+    ___x_cmd_dev "$@"
 fi
