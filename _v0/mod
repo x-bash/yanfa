@@ -11,7 +11,7 @@ ___x_cmd_dev_mod_lsmod_getfp(){
     return 1
 }
 
-dev_mod_ls(){
+___x_cmd_dev_mod_ls(){
     local fp
     fp="$(___x_cmd_dev_mod_lsmod_getfp)" || {
         printf "Cannot find file modlist." >&2
@@ -29,7 +29,7 @@ dev_mod_ls(){
 
 }
 
-dev_mod_add(){
+___x_cmd_dev_mod_add(){
     local name="${1:?Provide module name}"
     # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
     local position="${2:-"https://gitee.com/x-bash/$name.git"}"
@@ -37,7 +37,7 @@ dev_mod_add(){
     git subtree add --prefix="mod/$name" "$position" "$branch" --squash
 }
 
-dev_mod_pull(){
+___x_cmd_dev_mod_pull(){
     local name="${1:?Provide module name}"
     # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
     local position="${2:-"https://gitee.com/x-bash/$name.git"}"
@@ -45,7 +45,7 @@ dev_mod_pull(){
     git subtree pull --prefix="mod/$name" "$position" "$branch" --squash
 }
 
-dev_mod_update(){
+___x_cmd_dev_mod_update(){
     local IFS
     local mod
     git prune
@@ -60,7 +60,7 @@ dev_mod_update(){
     done
 }
 
-dev_mod_lsfile(){
+___x_cmd_dev_mod_allfile(){
     dev_mod_ls "$@" | (
         cd "$(x wsroot)/mod" && \
         while read -r line; do
@@ -73,7 +73,19 @@ dev_mod_lsfile(){
     )
 }
 
-dev_mod_tgz()(
+___x_cmd_dev_mod_file()(
+    IFS="
+"
+
+    printf "%s\n" latest
+
+    cd "$(x wsroot)" || exit
+    for i in _v0/*; do
+        printf "%s\n" "$i"
+    done
+)
+
+___x_cmd_dev_mod_tgz()(
     case "${1:-all}" in
         core)       scope=core ;;
         all)        scope=all ;;
@@ -89,7 +101,7 @@ dev_mod_tgz()(
         ls -alh "$WSROOT/dist/$scope.tgz"
 )
 
-dev_mod_tar()(
+___x_cmd_dev_mod_tar()(
     case "${1:-all}" in
         core)       scope=core ;;
         all)        scope=all ;;
@@ -105,7 +117,7 @@ dev_mod_tar()(
         ls -alh "$WSROOT/dist/$scope.tar"
 )
 
-dev_mod(){
+___x_cmd_dev_mod(){
 
     param:dsl <<A
 SUBCOMMANDS:
@@ -115,16 +127,18 @@ SUBCOMMANDS:
     tar         "tar modules to core/all/<special-release>"
     tgz         "compress modules of core/all/<special-release> into <name>.tgz"
     all         ""
+    file        ""
+    allfile     ""
 A
     param:run
 
     case "$PARAM_SUBCMD" in
-        add)        dev_mod_add "$@" ;;
-        pull)       dev_mod_pull "$@" ;;
-        update)     dev_mod_update "$@" ;;
-        tar)        dev_mod_tar "$@" ;;
-        tgz)        dev_mod_tar "$@" ;;
-        all|"")     dev_mod_update all ;;
+        add)        ___x_cmd_dev_mod_add "$@" ;;
+        pull)       ___x_cmd_dev_mod_pull "$@" ;;
+        update)     ___x_cmd_dev_mod_update "$@" ;;
+        tar)        ___x_cmd_dev_mod_tar "$@" ;;
+        tgz)        ___x_cmd_dev_mod_tar "$@" ;;
+        all|"")     ___x_cmd_dev_mod_update all ;;
         *)          printf "Unknown subcmd: %s\n" "$PARAM_SUBCMD" >&2
     esac
 

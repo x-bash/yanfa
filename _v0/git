@@ -1,6 +1,6 @@
 # shellcheck shell=sh disable=SC3043
 
-___x_cmd_dev_geturl(){
+___x_cmd_dev_git_geturl(){
     git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
 
     BEGIN { exit_code=1; }
@@ -20,7 +20,7 @@ ___x_cmd_dev_geturl(){
 
 ___x_cmd_dev_git_add_repo(){
     local url
-    url="$(___x_cmd_dev_geturl)" || return
+    url="$(___x_cmd_dev_git_geturl)" || return
 
     git remote remove gitee 2>/dev/null
     git remote add gitee "git@gitee.com:$url"
@@ -29,7 +29,7 @@ ___x_cmd_dev_git_add_repo(){
     git remote add github "git@github.com:$url"
 }
 
-___x_cmd_dev_pull(){
+___x_cmd_dev_git_pull(){
     ___x_cmd_dev_git_add_repo || return
 
     local branch
@@ -42,7 +42,7 @@ ___x_cmd_dev_pull(){
     fi
 }
 
-___x_cmd_dev_push(){
+___x_cmd_dev_git_push(){
     ___x_cmd_dev_git_add_repo || return
 
     local branch
@@ -50,4 +50,20 @@ ___x_cmd_dev_push(){
 
     git push gitee "$branch"
     git push github "$branch"
+}
+
+___x_cmd_dev_git(){
+    param:dsl <<A
+SUBCOMMANDS:
+    pull        "pull repo"
+    push        "push repo"
+A
+    param:run
+
+    if [ -z "$PARAM_SUBCMD" ]; then
+        ___x_cmd_dev_git help
+        return 1
+    fi
+
+    "___x_cmd_dev_git_$PARAM_SUBCMD" "$@"
 }
