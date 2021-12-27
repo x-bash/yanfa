@@ -6,7 +6,7 @@ ___x_cmd_dev_mod_geturl(){
     BEGIN { exit_code=1; }
     {
         url=$2
-        match(url, /x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)
+        match(url, /x-((bash)|(cmd))\/[a-zA-Z0-9_-]+\.git$/)
         if (RLENGTH > 0) {
             print substr(url, RSTART, RLENGTH)
             exit_code=0
@@ -21,7 +21,10 @@ ___x_cmd_dev_mod_geturl(){
 
 ___x_cmd_dev_mod_add_source(){
     local url
-    url="$(___x_cmd_dev_mod_geturl)" || return
+    url="$(___x_cmd_dev_mod_geturl)" || {
+        printf "Cannot find"
+        return
+    }
 
     git remote remove gitee 2>/dev/null
     git remote add gitee "git@gitee.com:$url"
