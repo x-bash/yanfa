@@ -70,9 +70,9 @@ ___x_cmd_dev_mod_lsfile0()(
 )
 
 ___x_cmd_dev_mod_lsfile()(
-    if [ -f "$(x wsroot)/lsfile" ]; then
+    if [ -f "$(x wsroot)/.x-cmd/lsfile" ]; then
         # TODO: using engine to directly run the local file
-        x ws lsfile
+        X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 x ws lsfile
     else
         ___x_cmd_dev_mod_lsfile0
     fi
@@ -93,9 +93,9 @@ ___x_cmd_dev_mod_cpfile()(
     rm -rf "$current_folder"
     mkdir -p "$current_folder"
 
-    if [ -f "$(x wsroot)/cpfile" ]; then
+    if [ -f "$(x wsroot)/.x-cmd/cpfile" ]; then
         # TODO: using engine to directly run the local file
-        x ws cpfile "$@"
+        X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 x ws cpfile "$@"
     else
         ___x_cmd_dev_mod_lsfile | x arg1 ___x_cmd_dev_mod_cpfile_tmp "$current_folder"
     fi

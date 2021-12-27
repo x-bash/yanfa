@@ -32,6 +32,8 @@ A
 
 x alias pull="x dev mod pull"
 x alias push="x dev mod push"
+x alias lsfile="x dev mod lsfile"
+x alias cpfile="x dev mod cpfile"
 
 # if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
 #     xrc advise/v0

@@ -1,3 +1,0 @@
-# shellcheck sh=sh # xsh
-
-x dev mod lsfile0

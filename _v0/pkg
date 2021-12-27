@@ -15,7 +15,7 @@ ___x_cmd_dev_pkg_lsmod_getfp(){
 ___x_cmd_dev_pkg_lsmod(){
     local fp
     fp="$(___x_cmd_dev_pkg_lsmod_getfp)" || {
-        printf "Cannot find file modlist." >&2
+        printf "Cannot find file modlist.\n" >&2
         return
     }
 
