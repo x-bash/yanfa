@@ -1,0 +1,3 @@
+# shellcheck=sh # xsh
+
+x dev mod file

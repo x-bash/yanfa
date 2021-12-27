@@ -16,6 +16,7 @@ subcommand:
     init        "init"
     push        "push"
     pull        "pull"
+    mod         "modules"
 A
     param:run
 
