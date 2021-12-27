@@ -1,0 +1,34 @@
+___x_cmd_dev_pull(){
+
+}
+
+___x_cmd_dev_push(){
+
+    local url
+
+    url="$(
+        git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
+
+        BEGIN { exit_code=1; }
+        {
+            url=$1
+            if (match($1, (/(x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)) {
+                print substr($1, RSTART, RLENGTH)
+                exit_code=0
+                exit(0)
+            }
+        }
+        END{
+            exit(exit_code)
+        }
+        '
+    )" || return
+
+    git remote remove gitee 2>/dev/null
+    git remote add gitee git@gitee.com:x-bash/x-cmd.git
+    git push gitee main
+
+    git remote remove github 2>/dev/null
+    git remote add github git@github.com:x-bash/x-cmd.git
+    git push github main
+}

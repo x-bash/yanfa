@@ -6,6 +6,7 @@
 xrc param/v0
 
 xrc dev/_v0/xproj
+xrc dev/_v0/gitutils
 
 # git config --worktree --get-regexp "remote[a-z\.]+.url"
 
@@ -25,12 +26,12 @@ A
 
     echo "$@"
 
-    "dev_${PARAM_SUBCMD}" "$@"
-    # "dev_$PARAM_SUBCMD" ${1:+$@}
+    "___x_cmd_dev_${PARAM_SUBCMD}" "$@"
+    # "___x_cmd_dev_$PARAM_SUBCMD" ${1:+$@}
 
 }
 
-dev_init(){
+___x_cmd_dev_init(){
     param:dsl <<A
 subcommand:
     gitignore|git       "git ignore"
@@ -42,15 +43,15 @@ A
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        dev_init help
+        ___x_cmd_dev_init help
         return 0
     fi
 
-    "dev_init_$PARAM_SUBCMD" ${1:+"$@"}
+    "___x_cmd_dev_init_$PARAM_SUBCMD" ${1:+"$@"}
 }
 
 # According projects
-dev_init_gitignore(){
+___x_cmd_dev_init_gitignore(){
     cat >.gitignore  <<A
 dist
 build
@@ -63,14 +64,17 @@ A
 
 # TODO: vscode project
 # According project
-dev_init_vscode(){
+___x_cmd_dev_init_vscode(){
     mkdir -p .vscode
     xrc cat dev/_v0/settings.json
 }
 
-dev_init_license(){
+___x_cmd_dev_init_license(){
     xrc cat dev/_v0/LICENSE
 }
+
+x alias pull="x dev pull"
+x alias push="x dev push"
 
 if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
     xrc advise/v0
