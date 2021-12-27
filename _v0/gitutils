@@ -1,34 +1,53 @@
-___x_cmd_dev_pull(){
+# shellcheck shell=sh disable=SC3043
 
+___x_cmd_dev_geturl(){
+    git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
+
+    BEGIN { exit_code=1; }
+    {
+        url=$1
+        if (match($1, (/(x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)) {
+            print substr($1, RSTART, RLENGTH)
+            exit_code=0
+            exit(0)
+        }
+    }
+    END{
+        exit(exit_code)
+    }
+    '
+}
+
+___x_cmd_dev_git_add_repo(){
+    local url
+    url="$(___x_cmd_dev_geturl)" || return
+
+    git remote remove gitee 2>/dev/null
+    git remote add gitee "git@gitee.com:$url"
+
+    git remote remove github 2>/dev/null
+    git remote add github "git@github.com:$url"
+}
+
+___x_cmd_dev_pull(){
+    ___x_cmd_dev_git_add_repo || return
+
+    local branch
+    branch="${1:-"$(git branch --show-current)"}"
+
+    if [ -z "$___X_CMD_IN_CHINA_NET" ]; then
+        git pull github "$branch"
+    else
+        git pull gitee "$branch"
+    fi
 }
 
 ___x_cmd_dev_push(){
+    ___x_cmd_dev_git_add_repo || return
 
-    local url
+    local branch
+    branch="${1:-"$(git branch --show-current)"}"
 
-    url="$(
-        git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
-
-        BEGIN { exit_code=1; }
-        {
-            url=$1
-            if (match($1, (/(x-((bash)|(cmd))\/[a-zA-Z0-9_]+\.git$/)) {
-                print substr($1, RSTART, RLENGTH)
-                exit_code=0
-                exit(0)
-            }
-        }
-        END{
-            exit(exit_code)
-        }
-        '
-    )" || return
-
-    git remote remove gitee 2>/dev/null
-    git remote add gitee git@gitee.com:x-bash/x-cmd.git
-    git push gitee main
-
-    git remote remove github 2>/dev/null
-    git remote add github git@github.com:x-bash/x-cmd.git
-    git push github main
+    git push gitee "$branch"
+    git push github "$branch"
 }
