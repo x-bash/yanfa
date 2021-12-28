@@ -3,7 +3,7 @@
 # if x dev mod _has "$1"; then
 #     x dev mod "$@"
 # else
-#     x "$@"
+#     . "$@"
 # fi
 
 x dev mod "$@"
