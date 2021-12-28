@@ -67,7 +67,8 @@ ___x_cmd_dev_mod_lsfile0()(
         latest v* _v*/* _v*/**/* \
         third-party/* third-party/*/.* third-party/**/* third-party/**/*/* third-party/**/*/*/*
     do
-        [ "$i" != "${i#*_test*}" ] && continue
+        [ "$i" != "${i#*.test.*}" ] && continue
+        [ "$i" != "${i%.test}" ] && continue
         [ -f "$i" ] && printf "%s\n" "$i"
     done
 )
