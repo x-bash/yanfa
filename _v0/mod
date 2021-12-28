@@ -86,7 +86,7 @@ ___x_cmd_dev_mod_cpfile_tmp(){
     local src="$2"
     local dst="$1/$src"
     mkdir -p "$(dirname "$dst")"
-    printf "%s\n" "Moving: $src  s $dst"
+    printf "Moving:   %-30s\t%s\n" "$src" "$dst"
     cp "$src" "$dst"
 }
 
