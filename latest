@@ -19,6 +19,7 @@ subcommand:
     init        "init"
     mod         "modules"
     pkg         "package"
+    ws          "workspace"
 A
     param:run
 
