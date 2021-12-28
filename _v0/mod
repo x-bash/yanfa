@@ -1,5 +1,11 @@
 # shellcheck shell=sh
 
+___x_cmd_dev_mod_name(){
+    local name
+    name=$(___x_cmd_dev_mod_geturl)
+    printf "%s\n" "${name%.git}"
+}
+
 ___x_cmd_dev_mod_geturl(){
     git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
 
@@ -107,9 +113,29 @@ ___x_cmd_dev_mod_cpfile()(
 )
 
 ___x_cmd_dev_mod_wc(){
-    ___x_cmd_dev_mod_lsfile "$@" | xargs wc
+    ___x_cmd_dev_mod_lsfile "$@" | xargs wc | sort -n -r | less
 }
 
+
+___x_cmd_dev_mod_devi(){
+    local name
+    name="$(___x_cmd_dev_mod_name)"
+    name="ws-${name%/*}-${name#*/}"
+
+    local id
+    id="$(docker container ls -a -f name=ws-x-bash-dev --quiet)"
+
+    if [ -z "$id" ]; then
+        docker run -it --network host --name "$name" \
+            -v "$HOME/.ssh:/root/.ssh" \
+            -v "$(x wsroot):/$name}" \
+            -v "$(x wsroot):/ws" \
+            xcmd/alpine-dev bash
+    else
+        docker container start "$id"
+        docker container exec -it "$id" bash
+    fi
+}
 
 ___x_cmd_dev_mod(){
 
@@ -121,6 +147,7 @@ subcommand:
     lsfile0     "ls file to p"
     cpfile      "cp file to home folder"
     wc          "wc"
+    devi        "container"
 A
     param:run
 
