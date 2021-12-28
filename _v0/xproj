@@ -38,7 +38,7 @@ dev_init_xproj_latest(){
     cat >./latest  <<A
 # shellcheck shell=sh
 
-# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
+# author:       Li Junhao           l@x-cmd.com
 # maintainer:   Li Junhao
 
 xrc $repo/v0
