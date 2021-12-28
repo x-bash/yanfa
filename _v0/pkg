@@ -121,7 +121,8 @@ ___x_cmd_dev_pkg_7z()(
 )
 
 ___x_cmd_dev_pkg_wc(){
-    ___x_cmd_dev_pkg_lsfile "$@" | xargs wc
+    cd "$(x wsroot)/mod" &&
+        ___x_cmd_dev_pkg_lsfile "$@" | xargs wc
 }
 
 ___x_cmd_dev_pkg(){
