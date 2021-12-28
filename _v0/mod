@@ -3,8 +3,17 @@
 ___x_cmd_dev_mod_name(){
     local name
     name=$(___x_cmd_dev_mod_geturl)
-    printf "%s\n" "${name%.git}"
+    name="${name%.git}"
+
+    case "$#" in
+        0)      printf "%s\n" "${name%.git}" ;;
+        1)      [ "$1" != "-" ] && eval "$1=\"\${name%/*}\"" ;;
+        2)
+                [ "$1" != "-" ] && eval "$1=\"\${name%/*}\""
+                [ "$2" != "-" ] && eval "$2=\"\${name#*/}\""
+    esac
 }
+
 
 ___x_cmd_dev_mod_geturl(){
     git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
@@ -71,7 +80,8 @@ ___x_cmd_dev_mod_lsfile0()(
     local i
     for i in \
         latest v* _v*/* _v*/**/* \
-        third-party/* third-party/*/.* third-party/**/* third-party/**/*/* third-party/**/*/*/*
+        third-party/* third-party/*/.* third-party/**/* third-party/**/*/* third-party/**/*/*/* \
+        lib/* lib/**/*
     do
         [ "$i" != "${i#*_test*}" ] && continue
         # [ "$i" != "${i%.test}" ] && continue
