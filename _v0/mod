@@ -104,6 +104,11 @@ ___x_cmd_dev_mod_cpfile()(
     fi
 )
 
+___x_cmd_dev_mod_wc(){
+    ___x_cmd_dev_mod_lsfile "$@" | xargs wc
+}
+
+
 ___x_cmd_dev_mod(){
 
     param:dsl <<A
@@ -113,6 +118,7 @@ subcommand:
     lsfile      "ls file to p"
     lsfile0     "ls file to p"
     cpfile      "cp file to home folder"
+    wc          "wc"
 A
     param:run
 
