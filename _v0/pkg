@@ -135,6 +135,7 @@ subcommand:
     tar         "add modules"
     lsfile      ""
     wc          "count"
+    pub         "publish the package"
 A
     param:run
 
