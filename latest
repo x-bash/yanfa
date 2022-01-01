@@ -32,15 +32,26 @@ A
 }
 
 
-x alias pull="x dev mod pull"
-x alias push="x dev mod push"
-x alias lsfile="x dev mod lsfile"
-x alias cpfile="x dev mod cpfile"
+alias giss="git status -s"
+alias gip="x dev mod pull"
+alias giP="x dev mod push"
+giam(){
+    local msg="${1:-...}"
+    shift
+    if [ $# -eq 0 ]; then
+        git add .
+    else
+        git add "$@"
+    fi
+    git commit -m "$msg"
+}
 
 # if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
 #     xrc advise/v0
 #     advise dev
 # fi
+
+alias xdev="x dev"
 
 if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
     ___x_cmd_dev "$@"

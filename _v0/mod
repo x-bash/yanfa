@@ -10,6 +10,7 @@ ___x_cmd_dev_mod_lsfile0()(
     local i
     for i in \
         latest v* _v*/* _v*/**/* \
+        lib/* lib/**/* \
         third-party/* third-party/*/.* third-party/**/* third-party/**/*/* third-party/**/*/*/* \
         lib/* lib/**/*
     do
