@@ -12,6 +12,22 @@ ___x_cmd_dev_pkg_lsmod_getfp(){
     return 1
 }
 
+___x_cmd_dev_pkg_lsmod_latest(){
+    # ___x_cmd_curl_gitx modlist
+    curl https://gitee.com/x-cmd/x-cmd/raw/main/modlist | ___x_cmd_dev_pkg_lsmod_awk_
+}
+
+___x_cmd_dev_pkg_lsmod_awk_(){
+    awk -v mode="${1:-all}" '
+($0!="")&&($0 !~ /[ ]*#/){
+    mod=$1
+    gsub(/^\+/, "", mod)
+    if (mode == "all") print mod
+    else if (mode == "core") { if ($1 ~ /^\+/) print mod }
+    else if (index(mode, mod) > 0) print mod
+}'
+}
+
 ___x_cmd_dev_pkg_lsmod(){
     local fp="${MODLIST:-""}"
     if [ -z "$fp" ]; then
@@ -21,14 +37,7 @@ ___x_cmd_dev_pkg_lsmod(){
         }
     fi
 
-    awk -v mode="${1:-all}" '
-($0!="")&&($0 !~ /[ ]*#/){
-    mod=$1
-    gsub(/^\+/, "", mod)
-    if (mode == "all") print mod
-    else if (mode == "core") { if ($1 ~ /^\+/) print mod }
-    else if (index(mode, mod) > 0) print mod
-}' <"$fp"
+    ___x_cmd_dev_pkg_lsmod_awk_ "$@" <"$fp"
 
 }
 

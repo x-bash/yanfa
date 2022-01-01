@@ -24,6 +24,7 @@ subcommand:
     pull        "pull"
     push        "push"
     clone       "module"
+    all         "all modules"
 A
     param:run
 
