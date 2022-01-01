@@ -51,7 +51,7 @@ giam(){
     local msg="${1:-...}"
     shift
     if [ $# -eq 0 ]; then
-        git add .
+        ( cd "$(x wsroot)" && git add . )
     else
         git add "$@"
     fi
