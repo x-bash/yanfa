@@ -31,6 +31,18 @@ A
     "___x_cmd_dev_${PARAM_SUBCMD}" "$@"
 }
 
+# if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+#     xrc advise/v0
+#     advise dev
+# fi
+
+alias xdev="x dev"
+
+if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
+    ___x_cmd_dev "$@"
+fi
+
+# TODO: we will find a more suitable place for the code below.
 
 alias giss="git status -s"
 alias gip="x dev mod pull"
@@ -46,13 +58,3 @@ giam(){
     git commit -m "$msg"
 }
 
-# if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
-#     xrc advise/v0
-#     advise dev
-# fi
-
-alias xdev="x dev"
-
-if [ -n "$___X_CMD_ENABLE_AUTO_RUN" ]; then
-    ___x_cmd_dev "$@"
-fi
