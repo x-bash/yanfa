@@ -144,6 +144,8 @@ subcommand:
     wc          "count"
     pub         "publish the package"
 
+    init        "init"
+
     pull        "pull"
     push        "push"
     name        "get workspace name from git config"
@@ -158,6 +160,10 @@ A
     case "$PARAM_SUBCMD" in
         pull|push|name)
             "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
+            return
+            ;;
+        init)
+            "___x_cmd_dev_init" "$@"
             return
     esac
 
