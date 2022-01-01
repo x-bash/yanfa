@@ -23,7 +23,7 @@ subcommand:
 
     pull        "pull"
     push        "push"
-    clone       "module"
+    clone       "clone all modules"
     all         "all modules"
 A
     param:run
@@ -35,6 +35,18 @@ A
 
     "___x_cmd_dev_${PARAM_SUBCMD}" "$@"
 }
+
+# Section: git
+
+___x_cmd_dev_clone(){
+    :
+}
+
+___x_cmd_dev_all(){
+    :
+}
+
+# EndSection
 
 # if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
 #     xrc advise/v0

@@ -14,7 +14,7 @@ ___x_cmd_dev_pkg_lsmod_getfp(){
 
 ___x_cmd_dev_pkg_lsmod_latest(){
     # ___x_cmd_curl_gitx modlist
-    curl https://gitee.com/x-cmd/x-cmd/raw/main/modlist | ___x_cmd_dev_pkg_lsmod_awk_
+    curl https://gitee.com/x-cmd/x-cmd/raw/main/modlist 2>/dev/null | ___x_cmd_dev_pkg_lsmod_awk_
 }
 
 ___x_cmd_dev_pkg_lsmod_awk_(){
@@ -38,7 +38,6 @@ ___x_cmd_dev_pkg_lsmod(){
     fi
 
     ___x_cmd_dev_pkg_lsmod_awk_ "$@" <"$fp"
-
 }
 
 ___x_cmd_dev_pkg_add(){
