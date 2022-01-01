@@ -1,6 +1,6 @@
 # shellcheck shell=sh disable=SC3043
 
-
+# git facility
 ___x_cmd_dev_ws_name(){
     local name
     name=$(___x_cmd_dev_ws_geturl)
@@ -15,7 +15,7 @@ ___x_cmd_dev_ws_name(){
     esac
 }
 
-
+# git facility
 ___x_cmd_dev_ws_geturl(){
     git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
 
@@ -35,6 +35,7 @@ ___x_cmd_dev_ws_geturl(){
     '
 }
 
+# git facility
 ___x_cmd_dev_ws_add_source(){
     local url
     url="$(___x_cmd_dev_ws_geturl)" || {

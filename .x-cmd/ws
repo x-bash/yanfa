@@ -1,4 +1,4 @@
-# xsh
+# xrc
 
 case "$1" in
     --help|help)

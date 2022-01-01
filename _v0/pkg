@@ -143,6 +143,10 @@ subcommand:
     lsfile      ""
     wc          "count"
     pub         "publish the package"
+
+    pull        "pull"
+    push        "push"
+    name        "get workspace name from git config"
 A
     param:run
 
@@ -150,6 +154,12 @@ A
         ___x_cmd_dev_pkg help
         return 1
     fi
+
+    case "$PARAM_SUBCMD" in
+        pull|push|name)
+            "___x_cmd_dev_ws_$1" "$@"
+            return
+    esac
 
     "___x_cmd_dev_pkg_${PARAM_SUBCMD}" "$@"
 

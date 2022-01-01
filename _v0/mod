@@ -86,6 +86,10 @@ subcommand:
     cpfile      "cp file to home folder"
     wc          "wc"
     devi        "container"
+
+    pull        "pull"
+    push        "push"
+    name        "get workspace name from git config"
 A
     param:run
 
@@ -94,6 +98,11 @@ A
         return 1
     fi
 
-    "___x_cmd_dev_mod_$PARAM_SUBCMD" "$@"
+    case "$PARAM_SUBCMD" in
+        pull|push|name)
+            "___x_cmd_dev_ws_$1" "$@"
+            return
+    esac
 
+    "___x_cmd_dev_mod_$PARAM_SUBCMD" "$@"
 }
