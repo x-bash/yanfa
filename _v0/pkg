@@ -157,7 +157,7 @@ A
 
     case "$PARAM_SUBCMD" in
         pull|push|name)
-            "___x_cmd_dev_ws_$1" "$@"
+            "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
             return
     esac
 
