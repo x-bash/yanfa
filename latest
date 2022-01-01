@@ -5,11 +5,11 @@
 
 xrc param/v0
 
-xrc dev/_v0/ws
-xrc dev/_v0/mod
-xrc dev/_v0/pkg
+xrc dev/lib/ws
+xrc dev/lib/mod
+xrc dev/lib/pkg
 
-xrc dev/_v0/init
+xrc dev/lib/init
 
 # git config --worktree --get-regexp "remote[a-z\.]+.url"
 
