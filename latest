@@ -45,8 +45,8 @@ fi
 # TODO: we will find a more suitable place for the code below.
 
 alias giss="git status -s"
-alias gip="x dev mod pull"
-alias giP="x dev mod push"
+alias gip="x dev ws pull"
+alias giP="x dev ws push"
 giam(){
     local msg="${1:-...}"
     shift
