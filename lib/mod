@@ -1,6 +1,6 @@
 # shellcheck shell=sh disable=SC3043,2120
 
-
+# Section: lsfile cpfile
 ___x_cmd_dev_mod_lsfile0()(
     IFS="
 "
@@ -53,11 +53,13 @@ ___x_cmd_dev_mod_cpfile()(
     fi
 )
 
+# EndSection
+
 ___x_cmd_dev_mod_wc(){
     ___x_cmd_dev_mod_lsfile "$@" | xargs wc | sort -n -r | less
 }
 
-
+# Section: devi
 ___x_cmd_dev_mod_devi(){
     local name
     name="$(___x_cmd_dev_mod_name)"
@@ -77,6 +79,8 @@ ___x_cmd_dev_mod_devi(){
         docker container exec -it "$id" bash
     fi
 }
+
+# EndSection
 
 # Section
 
@@ -130,11 +134,12 @@ ___x_cmd_dev_mod(){
     param:dsl <<A
 subcommand:
     ls          "ls mod"
+    wc          "wc"
+    devi        "container"
+
     lsfile      "ls file to p"
     lsfile0     "ls file to p"
     cpfile      "cp file to home folder"
-    wc          "wc"
-    devi        "container"
 
     init        "init"
 
