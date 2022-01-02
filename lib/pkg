@@ -1,6 +1,6 @@
 # shellcheck shell=sh disable=SC3043
 
-
+# Section: module add pull update
 ___x_cmd_dev_pkg_add(){
     local name="${1:?Provide module name}"
     # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
@@ -17,7 +17,7 @@ ___x_cmd_dev_pkg_pull(){
     git subtree pull --prefix="mod/$name" "$position" "$branch" --squash
 }
 
-___x_cmd_dev_pkg_mod(){
+___x_cmd_dev_pkg_update(){
     local IFS
     local mod
     git prune
@@ -32,6 +32,10 @@ ___x_cmd_dev_pkg_mod(){
     done
 }
 
+# EndSection
+
+# Section: information
+
 ___x_cmd_dev_pkg_lsmod(){       ___x_cmd_dev_mod_ls "$@";   }
 
 ___x_cmd_dev_pkg_lsfile()(
@@ -44,6 +48,15 @@ ___x_cmd_dev_pkg_lsfile()(
         done
     )
 )
+
+___x_cmd_dev_pkg_wc(){
+    cd "$(x wsroot)/mod" &&
+        ___x_cmd_dev_pkg_lsfile "$@" | xargs wc | sort -n -r | less
+}
+
+# EndSection
+
+# Section: tgz tar 7z
 
 ___x_cmd_dev_pkg_tgz()(
     case "${1:-all}" in
@@ -93,24 +106,20 @@ ___x_cmd_dev_pkg_7z()(
         ls -alh "$WSROOT/dist/$scope.7z"
 )
 
-___x_cmd_dev_pkg_wc(){
-    cd "$(x wsroot)/mod" &&
-        ___x_cmd_dev_pkg_lsfile "$@" | xargs wc | sort -n -r | less
-}
+# EndSection
 
 ___x_cmd_dev_pkg_pub(){
-   ___x_cmd_dev_pkg_mod "$@" && ___x_cmd_dev_pkg_tgz "$@" && ___x_cmd_dev_mod_push
+   ___x_cmd_dev_pkg_update "$@" && ___x_cmd_dev_pkg_tgz "$@" && ___x_cmd_dev_mod_push
     x push
 }
-
 
 ___x_cmd_dev_pkg(){
 
     param:dsl <<A
 subcommand:
-    mod         "add module"
+    update      "update or add module"
     tgz         "compress modules of core/all/<special-release> into <name>.tgz"
-    tar         "add modules"
+    tar         "compress modules"
     lsfile      ""
     wc          "count"
     pub         "publish the package"
