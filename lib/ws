@@ -76,6 +76,11 @@ ___x_cmd_dev_ws_push(){
 
 ___x_cmd_dev_ws(){
 
+    if [ -f "$(x wsroot)/$1" ]; then
+        x _ws "$@"
+        return
+    fi
+
     param:dsl <<A
 subcommand:
     pull        "pull module"
@@ -89,11 +94,6 @@ A
         return 1
     fi
 
-    if command -v "___x_cmd_dev_ws_$PARAM_SUBCMD" 1>/dev/null; then
-        "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
-        return
-    fi
-
-    x _ws "$@"
+    "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
 }
 
