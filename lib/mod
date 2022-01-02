@@ -114,7 +114,8 @@ ___x_cmd_dev_mod_ls(){
     local fp="${MODLIST:-""}"
     if [ -z "$fp" ]; then
         fp="$(___x_cmd_dev_mod_getfp)" || {
-            printf "Cannot find file modlist.\n" >&2
+            printf "Cannot find file modlist. Using ls_latest\n" >&2
+            ___x_cmd_dev_mod_ls_latest
             return
         }
     fi
