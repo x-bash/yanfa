@@ -118,11 +118,13 @@ ___x_cmd_dev_pkg(){
     param:dsl <<A
 subcommand:
     update      "update or add module"
-    tgz         "compress modules of core/all/<special-release> into <name>.tgz"
-    tar         "compress modules"
+    pub         "publish the package"
+    lsmod       "ls module"
     lsfile      ""
     wc          "count"
-    pub         "publish the package"
+
+    tgz         "compress modules of core/all/<special-release> into <name>.tgz"
+    tar         "compress modules"
 
     init        "init"
 
