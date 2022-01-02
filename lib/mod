@@ -154,15 +154,16 @@ A
         return 1
     fi
 
-    case "$PARAM_SUBCMD" in
-        pull|push|name)
-            "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
-            return
-            ;;
-        init)
-            "___x_cmd_dev_init" "$@"
-            return
-    esac
+    if command -v "___x_cmd_dev_mod_${PARAM_SUBCMD}" >/dev/null; then
+        "___x_cmd_dev_mod_$PARAM_SUBCMD" "$@"
+    else
+        case "$PARAM_SUBCMD" in
+            pull|push|name)
+                "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
+                ;;
+            init)
+                "___x_cmd_dev_init" "$@"
+        esac
+    fi
 
-    "___x_cmd_dev_mod_$PARAM_SUBCMD" "$@"
 }
