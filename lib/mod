@@ -1,6 +1,6 @@
 # shellcheck shell=sh disable=SC3043,2120
 
-# Section: lsfile cpfile
+# Section: lsfile install
 ___x_cmd_dev_mod_lsfile0()(
     IFS="
 "
@@ -29,7 +29,7 @@ ___x_cmd_dev_mod_lsfile()(
     fi
 )
 
-___x_cmd_dev_mod_cpfile_tmp(){
+___x_cmd_dev_mod_install_tmp(){
     local src="$2"
     local dst="$1/$src"
     mkdir -p "$(dirname "$dst")"
@@ -37,7 +37,7 @@ ___x_cmd_dev_mod_cpfile_tmp(){
     cp "$src" "$dst"
 }
 
-___x_cmd_dev_mod_cpfile()(
+___x_cmd_dev_mod_install()(
 
     local current_folder
     current_folder="$(basename "$(x wsroot)")"
@@ -45,11 +45,11 @@ ___x_cmd_dev_mod_cpfile()(
     rm -rf "$current_folder"
     mkdir -p "$current_folder"
 
-    if [ -f "$(x wsroot)/.x-cmd/cpfile" ]; then
+    if [ -f "$(x wsroot)/.x-cmd/install" ]; then
         # TODO: using engine to directly run the local file
-        X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 x ws cpfile "$@"
+        X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 x ws install "$@"
     else
-        ___x_cmd_dev_mod_lsfile | x arg1 ___x_cmd_dev_mod_cpfile_tmp "$current_folder"
+        ___x_cmd_dev_mod_lsfile | x arg1 ___x_cmd_dev_mod_install_tmp "$current_folder"
     fi
 )
 
@@ -137,9 +137,9 @@ subcommand:
     wc          "wc"
     devi        "container"
 
+    install      "cp file to home folder"
     lsfile      "ls file to p"
     lsfile0     "ls file to p"
-    cpfile      "cp file to home folder"
 
     init        "init"
 
