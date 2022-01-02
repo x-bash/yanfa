@@ -120,8 +120,8 @@ ___x_cmd_dev_pkg_7z()(
 # EndSection
 
 ___x_cmd_dev_pkg_pub(){
-   ___x_cmd_dev_pkg_update "$@" && ___x_cmd_dev_pkg_tgz "$@" && ___x_cmd_dev_mod_push
-    x push
+    ___x_cmd_dev_pkg_update "$@" && ___x_cmd_dev_pkg_tgz "$@" && ___x_cmd_dev_mod_push
+    ___x_cmd_dev_ws_push
 }
 
 ___x_cmd_dev_pkg(){
