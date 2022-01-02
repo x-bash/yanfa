@@ -78,10 +78,57 @@ ___x_cmd_dev_mod_devi(){
     fi
 }
 
+# Section
+
+___x_cmd_dev_mod_getfp(){
+    local filename=modlist
+    local fp
+    fp="$(pwd)/$filename"
+    [ -f "$fp" ] && printf "%s" "$fp" && return
+
+    fp="$(x wsroot)/$filename"
+    [ -f "$fp" ] && printf "%s" "$fp" && return
+
+    return 1
+}
+
+
+___x_cmd_dev_mod_ls_latest(){
+    # ___x_cmd_curl_gitx modlist
+    curl https://gitee.com/x-cmd/x-cmd/raw/main/modlist 2>/dev/null \
+        | ___x_cmd_dev_mod_ls_awk_
+}
+
+___x_cmd_dev_mod_ls_awk_(){
+    awk -v mode="${1:-all}" '
+($0!="")&&($0 !~ /[ ]*#/){
+    mod=$1
+    gsub(/^\+/, "", mod)
+    if (mode == "all") print mod
+    else if (mode == "core") { if ($1 ~ /^\+/) print mod }
+    else if (index(mode, mod) > 0) print mod
+}'
+}
+
+___x_cmd_dev_mod_ls(){
+    local fp="${MODLIST:-""}"
+    if [ -z "$fp" ]; then
+        fp="$(___x_cmd_dev_mod_getfp)" || {
+            printf "Cannot find file modlist.\n" >&2
+            return
+        }
+    fi
+
+    ___x_cmd_dev_mod_ls_awk_ "$@" <"$fp"
+}
+
+# EndSection
+
 ___x_cmd_dev_mod(){
 
     param:dsl <<A
 subcommand:
+    ls          "ls mod"
     lsfile      "ls file to p"
     lsfile0     "ls file to p"
     cpfile      "cp file to home folder"
