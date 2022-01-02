@@ -49,6 +49,17 @@ ___x_cmd_dev_pkg_lsfile()(
     )
 )
 
+___x_cmd_dev_pkg_install()(
+    cd "$(x wsroot)/mod" || return
+
+    ___x_cmd_dev_pkg_lsmod "$@" | (
+        cd "$(x wsroot)/mod" && \
+        while read -r line; do
+            ( cd "$line" && ___x_cmd_dev_mod_install )
+        done
+    )
+)
+
 ___x_cmd_dev_pkg_wc(){
     cd "$(x wsroot)/mod" &&
         ___x_cmd_dev_pkg_lsfile "$@" | xargs wc | sort -n -r | less
@@ -117,20 +128,22 @@ ___x_cmd_dev_pkg(){
 
     param:dsl <<A
 subcommand:
-    update      "update or add module"
-    pub         "publish the package"
-    lsmod       "ls module"
-    lsfile      ""
-    wc          "count"
+    install         "install all modules"
 
-    tgz         "compress modules of core/all/<special-release> into <name>.tgz"
-    tar         "compress modules"
+    update          "update or add module"
+    pub             "publish the package"
+    lsmod           "ls module"
+    lsfile          ""
+    wc              "count"
 
-    init        "init"
+    tgz             "compress modules of core/all/<special-release> into <name>.tgz"
+    tar             "compress modules"
 
-    pull        "pull"
-    push        "push"
-    name        "get workspace name from git config"
+    init            "init"
+
+    pull            "pull"
+    push            "push"
+    name            "get workspace name from git config"
 A
     param:run
 
