@@ -32,6 +32,8 @@ ___x_cmd_dev_pkg_mod(){
     done
 }
 
+___x_cmd_dev_pkg_lsmod(){       ___x_cmd_dev_mod_ls "$@";   }
+
 ___x_cmd_dev_pkg_lsfile()(
     cd "$(x wsroot)/mod" || return
 
@@ -97,7 +99,6 @@ ___x_cmd_dev_pkg_wc(){
 }
 
 ___x_cmd_dev_pkg_pub(){
-
    ___x_cmd_dev_pkg_mod "$@" && ___x_cmd_dev_pkg_tgz "$@" && ___x_cmd_dev_mod_push
     x push
 }
@@ -107,7 +108,6 @@ ___x_cmd_dev_pkg(){
 
     param:dsl <<A
 subcommand:
-    lsmod       "list module"
     mod         "add module"
     tgz         "compress modules of core/all/<special-release> into <name>.tgz"
     tar         "add modules"
