@@ -82,7 +82,7 @@ ___x_cmd_dev_mod_devi(){
 
 # EndSection
 
-# Section
+# Section: ls
 
 ___x_cmd_dev_mod_getfp(){
     local filename=modlist
