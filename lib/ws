@@ -76,7 +76,7 @@ ___x_cmd_dev_ws_push(){
 
 ___x_cmd_dev_ws(){
 
-    if [ -f "$(x wsroot)/$1" ]; then
+    if [ -f "$(x wsroot)/.x-cmd/$1" ]; then
         x _ws "$@"
         return
     fi
