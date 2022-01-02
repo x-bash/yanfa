@@ -89,7 +89,11 @@ A
         return 1
     fi
 
-    "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
+    if command -v "___x_cmd_dev_ws_$PARAM_SUBCMD" 1>/dev/null; then
+        "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
+        return
+    fi
 
+    x _ws "$@"
 }
 
