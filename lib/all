@@ -27,7 +27,7 @@ A
 ___x_cmd_dev_all_clone(){
     local n
     ___x_cmd_dev_all_ls | while read -r n; do
-        git clone "git@gitee.com:$n.git"
+        git clone "git@gitee.com:x-bash/$n.git"
     done
 }
 
