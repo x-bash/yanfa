@@ -14,6 +14,7 @@ subcommand:
     repolist    "Show all repo"
     repo        "clone or update all repos"
     clone       "clone"
+    map         "map"
     ls          "list modules"
 A
     param:run
