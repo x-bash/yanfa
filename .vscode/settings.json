@@ -5,6 +5,9 @@
         "**/*.json": "json",
         "**/*.md": "markdown",
         "**/*.yml": "yaml",
+        "**/*.py": "python",
+        "**/*.js": "javascript",
+        "**/*.ts": "typescript",
         "**/LICENSE": "TXT",
         "**/*": "shellscript"
     },
