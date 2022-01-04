@@ -11,7 +11,7 @@ subcommand:
     init        "init"
     pull        "pull"
     push        "push"
-    update      "update"
+    repo        "clone or update all repos"
     clone       "clone"
     ls          "list modules"
 A
