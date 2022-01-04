@@ -51,9 +51,7 @@ ___x_cmd_dev_all_map(){
                 ( eval "$x_bash_eval" )
             done
         }
-    )
-
-    (
+    ) && (
         cd "$curdir/x-cmd" && {
             local name
             ___x_cmd_dev_all_repolist | while read -r name; do
