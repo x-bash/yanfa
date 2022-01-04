@@ -8,6 +8,7 @@
 ___x_cmd_dev_all(){
     param:dsl <<A
 subcommand:
+    init        "init"
     pull        "pull"
     push        "push"
     update      "update"
@@ -30,40 +31,51 @@ ___x_cmd_dev_all_repolist(){
     curl https://gitee.com/x-cmd/x-cmd/raw/main/repolist 2>/dev/null | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
 }
 
-___x_cmd_dev_all_clone(){
+___x_cmd_dev_all_map(){
     local curdir="${1:-$HOME}"
+
+    [ ! -d "$curdir" ] && printf "Exepct a directory: %s\n" "$curdir" >&2 && return 1
 
     { mkdir -p "$curdir/x-bash" && cd "$curdir/x-bash" && cd -; } || printf "Cannot not enter directory: %s\n" "$curdir"
     { mkdir -p "$curdir/x-cmd" && cd "$curdir/x-cmd" && cd -; } || printf "Cannot not enter directory: %s\n" "$curdir"
 
     (
         cd "$curdir/x-bash" && {
-            local n
-            ___x_cmd_dev_all_ls | while read -r n; do
-                git clone "git@gitee.com:x-bash/$n.git"
+            local name
+            ___x_cmd_dev_all_ls | while read -r name; do
+                ( eval "$1" )
             done
         }
     )
 
     (
         cd "$curdir/x-cmd" && {
-            local n
+            local name
             ___x_cmd_dev_all_repolist | while read -r n; do
-                git clone "git@gitee.com:x-cmd/$n.git"
+                ( eval "$2" )
             done
         }
     )
 }
 
+# shellcheck disable=SC2016
+___x_cmd_dev_all_clone(){
+    ___x_cmd_dev_all_map "$1" \
+        'git clone "git@gitee.com:x-bash/$name.git"' \
+        'git clone "git@gitee.com:x-cmd/$name.git"'
+}
+
+# shellcheck disable=SC2016
 ___x_cmd_dev_all_update(){
-    local n
-    ___x_cmd_dev_all_ls | while read -r n; do
-        if [ -d "$n" ]; then
-            ( cd $n && git pull origin main && cd - )
+    ___x_cmd_dev_all_map "$1" '
+        git clone "git@gitee.com:x-bash/$name.git"
+    ' '
+        if [ -d "$name" ]; then
+            cd "$name" && git pull
         else
-            git clone "git@gitee.com:x-bash/$n.git"
+            git clone "git@gitee.com:x-cmd/$name.git"
         fi
-    done
+    '
 }
 
 ___x_cmd_dev_all_ls(){
