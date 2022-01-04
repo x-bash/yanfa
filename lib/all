@@ -35,8 +35,11 @@ ___x_cmd_dev_all_repolist(){
 
 ___x_cmd_dev_all_map(){
     local curdir="${1:-$HOME}"
-    local x_bash_eval="${2:-echo \"\$name\"}"
-    local x_cmd_eval="${3:-$2}"
+    local x_bash_eval="${2:?Provide sentence}"
+    local x_cmd_eval="${3:-"$2"}"
+
+    echo "--- $x_bash_eval"
+    echo "--- $x_cmd_eval"
 
     [ ! -d "$curdir" ] && printf "Exepct a directory: %s\n" "$curdir" >&2 && return 1
 
@@ -48,14 +51,14 @@ ___x_cmd_dev_all_map(){
         cd "$curdir/x-bash" && {
             local name
             ___x_cmd_dev_all_ls | while read -r name; do
-                ( eval "$x_bash_eval" )
+                ( eval "$x_bash_eval"; )
             done
         }
     ) && (
         cd "$curdir/x-cmd" && {
             local name
             ___x_cmd_dev_all_repolist | while read -r name; do
-                ( eval "$x_cmd_eval" )
+                ( eval "$x_cmd_eval"; )
             done
         }
     )
