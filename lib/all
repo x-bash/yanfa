@@ -60,7 +60,7 @@ ___x_cmd_dev_all_map(){
 
 # shellcheck disable=SC2016
 ___x_cmd_dev_all_clone(){
-    ___x_cmd_dev_all_map "$1" \
+    ___x_cmd_dev_all_map "${1:-$HOME}" \
         'git clone "git@gitee.com:x-bash/$name.git"' \
         'git clone "git@gitee.com:x-cmd/$name.git"'
 }
