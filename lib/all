@@ -43,7 +43,7 @@ ___x_cmd_dev_all_map(){
         cd "$curdir/x-bash" && {
             local name
             ___x_cmd_dev_all_ls | while read -r name; do
-                ( eval "$1" )
+                ( eval "$2" )
             done
         }
     )
@@ -51,8 +51,8 @@ ___x_cmd_dev_all_map(){
     (
         cd "$curdir/x-cmd" && {
             local name
-            ___x_cmd_dev_all_repolist | while read -r n; do
-                ( eval "$2" )
+            ___x_cmd_dev_all_repolist | while read -r name; do
+                ( eval "$3" )
             done
         }
     )
@@ -67,8 +67,12 @@ ___x_cmd_dev_all_clone(){
 
 # shellcheck disable=SC2016
 ___x_cmd_dev_all_update(){
-    ___x_cmd_dev_all_map "$1" '
-        git clone "git@gitee.com:x-bash/$name.git"
+    ___x_cmd_dev_all_map "${1:-$HOME}" '
+        if [ -d "$name" ]; then
+            cd "$name" && git pull
+        else
+            git clone "git@gitee.com:x-bash/$name.git"
+        fi
     ' '
         if [ -d "$name" ]; then
             cd "$name" && git pull
