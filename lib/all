@@ -33,17 +33,20 @@ ___x_cmd_dev_all_repolist(){
 
 ___x_cmd_dev_all_map(){
     local curdir="${1:-$HOME}"
+    local x_bash_eval="${2:-echo \"\$name\"}}"
+    local x_cmd_eval="${3:-$2}"
 
     [ ! -d "$curdir" ] && printf "Exepct a directory: %s\n" "$curdir" >&2 && return 1
 
     { mkdir -p "$curdir/x-bash" && cd "$curdir/x-bash" && cd -; } || printf "Cannot not enter directory: %s\n" "$curdir"
     { mkdir -p "$curdir/x-cmd" && cd "$curdir/x-cmd" && cd -; } || printf "Cannot not enter directory: %s\n" "$curdir"
 
+
     (
         cd "$curdir/x-bash" && {
             local name
             ___x_cmd_dev_all_ls | while read -r name; do
-                ( eval "$2" )
+                ( eval "$x_bash_eval" )
             done
         }
     )
@@ -52,7 +55,7 @@ ___x_cmd_dev_all_map(){
         cd "$curdir/x-cmd" && {
             local name
             ___x_cmd_dev_all_repolist | while read -r name; do
-                ( eval "$3" )
+                ( eval "$x_cmd_eval" )
             done
         }
     )
