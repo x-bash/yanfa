@@ -73,13 +73,13 @@ ___x_cmd_dev_all_clone(){
 ___x_cmd_dev_all_repo(){
     ___x_cmd_dev_all_map "${1:-$HOME}" '
         if [ -d "$name" ]; then
-            cd "$name" && git pull
+            cd "$name" && git pull && git pull origin main
         else
             git clone "git@gitee.com:x-bash/$name.git"
         fi
     ' '
         if [ -d "$name" ]; then
-            cd "$name" && git pull
+            cd "$name" && git pull && git pull origin main
         else
             git clone "git@gitee.com:x-cmd/$name.git"
         fi
