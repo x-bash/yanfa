@@ -35,7 +35,7 @@ A
 # TODO: vscode project
 # According project
 ___x_cmd_dev_init_vscode(){
-    mkdir -p .vscode
+    mkdir -p "$(x wsroot)/.vscode"
     xrc cat dev/lib/settings.json >"$(x wsroot)/.vscode/settings.json"
 
     local ext
