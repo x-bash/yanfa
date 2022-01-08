@@ -4,8 +4,8 @@ ___x_cmd_dev_init(){
     param:dsl <<A
 subcommand:
     gitignore|git       "git ignore"
-    vscode              "git ignore"
-    xcmd                "git ignore"
+    vscode              "vscode"
+    xcmd                "xcmd"
     license             "license"
     xproj               "x project"
 A
