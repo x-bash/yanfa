@@ -12,8 +12,7 @@ ___x_cmd_dev_mod_lsfile0()(
         "v*" \
         "_v*/**" \
         "lib/**" \
-        "third-party/**" \
-        "lib/**" | \
+        "third-party/**" | \
     while read -r i; do
         [ "$i" != "${i#*_test*}" ] && continue
         # [ "$i" != "${i%.test}" ] && continue
