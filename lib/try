@@ -98,7 +98,7 @@ ___x_cmd_dev_try_script_all(){
     if [ "$#" -eq 0 ]; then
 
         cat >&2 <<A
-Please input the script. Ctrl-D to EXIT.
+Please input the script. Press Ctrl-D to EXIT.
 A
 
         local script
