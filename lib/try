@@ -2,7 +2,7 @@
 
 
 ___x_cmd_dev_try(){
-    ___x_cmd_dev_try_exec "$@"
+    ___x_cmd_dev_try_script_all "$@"
 }
 
 ___x_cmd_dev_try_exausted(){
@@ -46,14 +46,16 @@ ___x_cmd_dev_try_get_image(){
 # x dev try     =>      x dev try posix
 
 ___x_cmd_dev_try_exec(){
-    local op="$1"; shift
+    local shell_name="$1"; shift
     local image
-    image="$(___x_cmd_dev_try_get_image "$op")"
-    if [ "${op#bash}" != "$op" ]; then
-        docker run -it "$image" bash "$@"
-    else
-        docker run -it "$image" "$op" "$@"
-    fi
+    image="$(___x_cmd_dev_try_get_image "$shell_name")"
+    local actual_name
+        case "$shell_name" in
+            bash*)  actual_name=bash ;;
+            ksh)    actual_name=mksh ;;
+            *)      actual_name="$shell_name"
+        esac
+        docker run -i "$image" "$actual_name"
 }
 
 ___x_cmd_dev_try_get_shell_to_test(){
@@ -81,11 +83,13 @@ ___x_cmd_dev_try_script(){
     } | {
         local image
         image="$(___x_cmd_dev_try_get_image "$shell_name")"
-        if [ "${shell_name#bash}" != "$shell_name" ]; then
-            docker run -i "$image" bash
-        else
-            docker run -i "$image" "$shell_name"
-        fi
+        local actual_name
+        case "$shell_name" in
+            bash*)  actual_name=bash ;;
+            ksh)    actual_name=mksh ;;
+            *)      actual_name="$shell_name"
+        esac
+        docker run -i "$image" "$actual_name"
     }
 }
 
