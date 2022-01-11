@@ -1,8 +1,7 @@
 
 
-
 ___x_cmd_dev_try(){
-    ___x_cmd_dev_try_script_all "$@"
+    ___x_cmd_dev_try_posix "$@"
 }
 
 ___x_cmd_dev_try_exausted(){
