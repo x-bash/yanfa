@@ -2,6 +2,7 @@
 
 # Section: lsfile install
 ___x_cmd_dev_mod_lsfile0()(
+    param:void
     IFS="
 "
 
@@ -22,6 +23,7 @@ ___x_cmd_dev_mod_lsfile0()(
 )
 
 ___x_cmd_dev_mod_lsfile()(
+    param:void
     if [ -f "$(x wsroot)/.x-cmd/lsfile" ]; then
         # TODO: using engine to directly run the local file
         X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 x ws lsfile
@@ -39,7 +41,7 @@ ___x_cmd_dev_mod_install_tmp(){
 }
 
 ___x_cmd_dev_mod_install()(
-
+    param:void
     local current_folder
     current_folder="$(basename "$(x wsroot)")"
     current_folder="$HOME/.x-cmd/$current_folder"
@@ -59,6 +61,7 @@ ___x_cmd_dev_mod_install()(
 # Section: pkg
 
 ___x_cmd_dev_mod_tgz(){
+    param:void
     WSROOT="$(x wsroot)"
 
     local scope
@@ -74,11 +77,13 @@ ___x_cmd_dev_mod_tgz(){
 # EndSection
 
 ___x_cmd_dev_mod_wc(){
+    param:void
     ___x_cmd_dev_mod_lsfile "$@" | xargs wc | sort -n -r | less
 }
 
 # Section: devi
 ___x_cmd_dev_mod_devi(){
+    param:void
     local name
     name="$(___x_cmd_dev_mod_name)"
     name="ws-${name%/*}-${name#*/}"
@@ -133,6 +138,7 @@ ___x_cmd_dev_mod_ls_awk_(){
 }
 
 ___x_cmd_dev_mod_ls(){
+    param:void
     local fp="${MODLIST:-""}"
     if [ -z "$fp" ]; then
         fp="$(___x_cmd_dev_mod_getfp)" || {
