@@ -1,7 +1,6 @@
 # shellcheck shell=sh # xrc
 
 # author:       Li Junhao           l@x-cmd.com
-# maintainer:   Li Junhao
 
 # Section: modules included
 xrc param/latest
@@ -13,6 +12,7 @@ xrc dev/lib/mod
 xrc dev/lib/pkg
 
 xrc dev/lib/init
+xrc dev/lib/try
 
 # EndSection
 
@@ -26,6 +26,7 @@ subcommand:
     pkg         "package"
     ws          "workspace"
     all         "all modules"
+    try         "do some experiment on all poxis shell"
 A
     param:run
 
