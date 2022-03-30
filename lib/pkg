@@ -47,7 +47,7 @@ ___x_cmd_dev_pkg_update0(){
     done
 }
 
-___x_cmd_dev_pkg_update_main0(){
+___x_cmd_dev_pkg_update_main(){
     local mod="$1"
     if [ -e "mod/$mod" ]; then
         printf "%s\n" "Pull: $mod"
@@ -68,15 +68,15 @@ ___x_cmd_dev_pkg_update(){
     ___x_cmd_dev_pkg_lsmod "$@" | {
         while read -r mod; do
             # OUT=/dev/null
-            x job put 5 ___x_cmd_dev_pkg_update_main "$mod"
+            x job put 7 ___x_cmd_dev_pkg_update_main "$mod"
             printf "%s\n" "Update: $mod" >&2
         done
 
         x job wait
     } | while read -r line; do
+        printf "%s\n" "$line"
         case "$line" in
             Write*)
-                printf "%s\n" "$line"
                 printf "%s\n" "---------------"
                 cat "${line#Write: }"
                 printf "%s\n" "---------------"
