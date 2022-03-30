@@ -55,7 +55,8 @@ ___x_cmd_dev_pkg_update(){
 
     ___x_cmd_dev_pkg_lsmod "$@" | \
     while read -r mod; do
-        OUT=/dev/null x job put 5 ___x_cmd_dev_pkg_update_main "$mod"
+        # OUT=/dev/null
+        x job put 5 ___x_cmd_dev_pkg_update_main "$mod"
         printf "%s\n" "Update: $mod" >&2
     done
 
@@ -160,7 +161,7 @@ ___x_cmd_dev_pkg_7z()(
 
 ___x_cmd_dev_pkg_pub0(){
     param:void
-    ___x_cmd_dev_pkg_update "$@" && ___x_cmd_dev_pkg_tgz "$@" && git add . && git commit -m ...
+    ___x_cmd_dev_pkg_update0 "$@" && ___x_cmd_dev_pkg_tgz "$@" && git add . && git commit -m ...
     ___x_cmd_dev_ws_push
 }
 
