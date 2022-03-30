@@ -56,7 +56,7 @@ ___x_cmd_dev_pkg_update_main(){
         printf "%s\n" "Add: $mod"
         ___x_cmd_dev_pkg_add "$mod"
     fi 1>"$TMPDIR/$mod.out" 2>&1
-    printf "Write: %s" "$TMPDIR/$mod.out"
+    printf "Write: %s\n" "$TMPDIR/$mod.out"
 }
 
 ___x_cmd_dev_pkg_update(){
