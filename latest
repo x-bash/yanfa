@@ -38,15 +38,14 @@ A
     "___x_cmd_yanfa_${PARAM_SUBCMD}" "$@"
 }
 
-alias xdev="x dev"
 
 # Section: git
 
 # TODO: we will find a more suitable place for the code below.
 
 alias giss="git status -s"
-alias gip="x dev ws pull"
-alias giP="x dev ws push"
+alias gip="x yanfa ws pull"
+alias giP="x yanfa ws push"
 giam(){
     local msg="${1:-...}"
     shift
