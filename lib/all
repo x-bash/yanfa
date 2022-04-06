@@ -8,7 +8,6 @@
 ___x_cmd_yanfa_all(){
     param:dsl <<A
 subcommand:
-    init        "init"
     pull        "pull"
     push        "push"
     repolist    "Show all repo"
