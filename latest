@@ -5,14 +5,14 @@
 # Section: modules included
 xrc param/latest
 
-xrc dev/lib/all
+xrc yanfa/lib/all
 
-xrc dev/lib/ws
-xrc dev/lib/mod
-xrc dev/lib/pkg
+xrc yanfa/lib/ws
+xrc yanfa/lib/mod
+xrc yanfa/lib/pkg
 
-xrc dev/lib/init
-xrc dev/lib/try
+xrc yanfa/lib/init
+xrc yanfa/lib/try
 
 # EndSection
 
