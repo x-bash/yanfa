@@ -18,7 +18,7 @@ xrc dev/lib/try
 
 # git config --worktree --get-regexp "remote[a-z\.]+.url"
 
-___x_cmd_dev(){
+___x_cmd_yanfa(){
     param:dsl <<A
 subcommand:
     init        "init"
@@ -31,11 +31,11 @@ A
     param:run
 
     if [ -z "${PARAM_SUBCMD}" ]; then
-        ___x_cmd_dev help
+        ___x_cmd_yanfa help
         return 0
     fi
 
-    "___x_cmd_dev_${PARAM_SUBCMD}" "$@"
+    "___x_cmd_yanfa_${PARAM_SUBCMD}" "$@"
 }
 
 alias xdev="x dev"
@@ -60,4 +60,4 @@ giam(){
 
 # EndSection
 
-xrc setmain ___x_cmd_dev
+xrc setmain ___x_cmd_yanfa

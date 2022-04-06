@@ -1,11 +1,11 @@
 
 
-___x_cmd_dev_try(){
+___x_cmd_yanfa_try(){
     param:void
-    ___x_cmd_dev_try_posix "$@"
+    ___x_cmd_yanfa_try_posix "$@"
 }
 
-___x_cmd_dev_try_exausted(){
+___x_cmd_yanfa_try_exausted(){
     DOCKER_PLATFORM=linux/arm64
 
 # bash3
@@ -31,7 +31,7 @@ xcmd/gentoo/stage3
 
 # Test inside ...
 # I think we should use posix shell compatible mode to do it...
-___x_cmd_dev_try_get_image(){
+___x_cmd_yanfa_try_get_image(){
     case "${1:?Provide fun}" in
         bash3)      printf "%s" bash:3 ;;
         bash4)      printf "%s" bash:4 ;;
@@ -45,10 +45,10 @@ ___x_cmd_dev_try_get_image(){
 
 # x dev try     =>      x dev try posix
 
-___x_cmd_dev_try_exec(){
+___x_cmd_yanfa_try_exec(){
     local shell_name="$1"; shift
     local image
-    image="$(___x_cmd_dev_try_get_image "$shell_name")"
+    image="$(___x_cmd_yanfa_try_get_image "$shell_name")"
     local actual_name
         case "$shell_name" in
             bash*)  actual_name=bash ;;
@@ -58,7 +58,7 @@ ___x_cmd_dev_try_exec(){
         docker run -i "$image" "$actual_name"
 }
 
-___x_cmd_dev_try_get_shell_to_test(){
+___x_cmd_yanfa_try_get_shell_to_test(){
     cat <<A
 bash3
 bash4
@@ -71,7 +71,7 @@ A
 }
 
 # Section: try script
-___x_cmd_dev_try_script(){
+___x_cmd_yanfa_try_script(){
     local shell_name="${1:-Must provide shell name}";   shift
 
     {
@@ -82,7 +82,7 @@ ___x_cmd_dev_try_script(){
         fi
     } | {
         local image
-        image="$(___x_cmd_dev_try_get_image "$shell_name")"
+        image="$(___x_cmd_yanfa_try_get_image "$shell_name")"
         local actual_name
         case "$shell_name" in
             bash*)  actual_name=bash ;;
@@ -93,7 +93,7 @@ ___x_cmd_dev_try_script(){
     }
 }
 
-___x_cmd_dev_try_script_all(){
+___x_cmd_yanfa_try_script_all(){
     local SHELL
 
     if [ "$#" -eq 0 ]; then
@@ -113,7 +113,7 @@ A
         trap 'printf "Interrputed.\n"; break ' SIGINT
         trap 'printf "Interrputed.\n"; break ' SIGTERM
 
-        ___x_cmd_dev_try_get_shell_to_test | {
+        ___x_cmd_yanfa_try_get_shell_to_test | {
             trap 'printf "Interrputed.\n"; break ' SIGINT
 
             while read -r SHELL || echo err; do
@@ -122,7 +122,7 @@ A
                 trap -p SIGINT
 
                 printf "\n%s\n%s: %s\n" "--------------------" "Trying" "$SHELL" >&2
-                printf "%s" "$script" | ___x_cmd_dev_try_script "$SHELL"
+                printf "%s" "$script" | ___x_cmd_yanfa_try_script "$SHELL"
                 code=$?
 
                 if [ $code -eq 255 ]; then
@@ -134,9 +134,9 @@ A
         return
     else
         trap 'printf "Interrputed.\n"; break ' SIGINT
-        ___x_cmd_dev_try_get_shell_to_test | while read -r SHELL; do
+        ___x_cmd_yanfa_try_get_shell_to_test | while read -r SHELL; do
             printf "\n%s\n%s: %s\n" "--------------------" "Trying" "$SHELL"
-            ___x_cmd_dev_try_script "$SHELL" "$@"
+            ___x_cmd_yanfa_try_script "$SHELL" "$@"
             code=$?
             if [ $code -eq 255 ]; then
                 printf "%s\n" "Exit because docker exit in 255 status." >&2
@@ -148,8 +148,8 @@ A
 
 }
 
-___x_cmd_dev_try_posix(){
-    ___x_cmd_dev_try_script_all "$@"
+___x_cmd_yanfa_try_posix(){
+    ___x_cmd_yanfa_try_script_all "$@"
 }
 
 # EndSection
@@ -157,7 +157,7 @@ ___x_cmd_dev_try_posix(){
 
 # Section: for test
 
-___x_cmd_dev_get_ximage(){
+___x_cmd_yanfa_get_ximage(){
     case "$1" in
         bash3)      printf "%s" bash:3 ;;   # inject curl
         bash4)      printf "%s" bash:4 ;;   # inject curl

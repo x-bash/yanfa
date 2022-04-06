@@ -1,10 +1,10 @@
 # shellcheck shell=sh disable=SC3043
 
 # git facility
-___x_cmd_dev_ws_name(){
+___x_cmd_yanfa_ws_name(){
     param:void
     local name
-    name=$(___x_cmd_dev_ws_geturl)
+    name=$(___x_cmd_yanfa_ws_geturl)
     name="${name%.git}"
 
     case "$#" in
@@ -17,7 +17,7 @@ ___x_cmd_dev_ws_name(){
 }
 
 # git facility
-___x_cmd_dev_ws_geturl(){
+___x_cmd_yanfa_ws_geturl(){
     git config --worktree --get-regexp "remote[a-z\.]+.url" | awk '
 
     BEGIN { exit_code=1; }
@@ -37,9 +37,9 @@ ___x_cmd_dev_ws_geturl(){
 }
 
 # git facility
-___x_cmd_dev_ws_add_source(){
+___x_cmd_yanfa_ws_add_source(){
     local url
-    url="$(___x_cmd_dev_ws_geturl)" || {
+    url="$(___x_cmd_yanfa_ws_geturl)" || {
         printf "Cannot find"
         return
     }
@@ -51,9 +51,9 @@ ___x_cmd_dev_ws_add_source(){
     git remote add github "git@github.com:$url"
 }
 
-___x_cmd_dev_ws_pull(){
+___x_cmd_yanfa_ws_pull(){
     param:void
-    ___x_cmd_dev_ws_add_source || return
+    ___x_cmd_yanfa_ws_add_source || return
 
     local branch
     branch="${1:-"$(git branch --show-current)"}"
@@ -65,9 +65,9 @@ ___x_cmd_dev_ws_pull(){
     fi
 }
 
-___x_cmd_dev_ws_push(){
+___x_cmd_yanfa_ws_push(){
     param:void
-    ___x_cmd_dev_ws_add_source || return
+    ___x_cmd_yanfa_ws_add_source || return
 
     local branch
     branch="${1:-"$(git branch --show-current)"}"
@@ -77,7 +77,7 @@ ___x_cmd_dev_ws_push(){
     git push github "$branch"
 }
 
-___x_cmd_dev_ws(){
+___x_cmd_yanfa_ws(){
     if [ -f "$(x wsroot)/.x-cmd/$1" ]; then
         x _ws "$@"
         return
@@ -92,10 +92,10 @@ A
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_dev_ws help
+        ___x_cmd_yanfa_ws help
         return 1
     fi
 
-    "___x_cmd_dev_ws_$PARAM_SUBCMD" "$@"
+    "___x_cmd_yanfa_ws_$PARAM_SUBCMD" "$@"
 }
 
