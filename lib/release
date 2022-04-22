@@ -163,10 +163,11 @@ ___x_cmd_yanfa_release_pub()(
     } && {
         x log :yanfa warn "<release-pub> create tgz"
         ___x_cmd_yanfa_release_tgz "$@"
+        x log :yanfa warn "<release-pub> create tgz exit: $?"
     } && {
         x log :yanfa warn "<release-pub> Add && Commit && Push"
         git add . && git commit -m ... && ___x_cmd_yanfa_ws_push
-
+        x log :yanfa warn "<release-pub> Add && Commit && Push exit: $?"
     }; then
         x log :yanfa warn "<release-pub> OK"
     else
