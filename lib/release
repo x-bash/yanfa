@@ -169,6 +169,7 @@ ___x_cmd_yanfa_release_pub()(
         x log :yanfa warn "<release-pub> OK"
     else
         x log :yanfa warn "<release-pub> Fail"
+        return 1
     fi
 )
 
