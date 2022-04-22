@@ -110,6 +110,7 @@ ___x_cmd_yanfa_release_cpfile()(
         ___x_cmd_yanfa_release_cpfile_inner "$line" "$tgt"
         x log :yanfa "<release_cpfile> $line => $tgt: $?"
     done
+    # TODO: In Github Action, it return 1. Resulting in breaking.
     x log :yanfa "<release_cpfile> exit: $?"
 )
 
