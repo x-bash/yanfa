@@ -126,7 +126,7 @@ ___x_cmd_yanfa_release_tgz()(
 
     cd "$WSROOT/mod" &&
         mkdir -p "$WSROOT/dist" &&
-        tar czf "$scope.tgz" * &&
+        tar czf "$scope.tgz" * 2>/dev/null &&
         mv "$scope.tgz" "$WSROOT/dist/$scope.tgz" &&
         ls -alh "$WSROOT/dist/$scope.tgz"
 )
