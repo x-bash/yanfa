@@ -22,7 +22,10 @@ ___x_cmd_yanfa_release_add()(
     cd "$___X_CMD_YANFA_RELEASE_TMP" || exit 1
 
     for ((i=1; i<=3; i=i+1)); do
-        git clone --quiet --depth=1 "$position" -b "$branch" && exit 0
+        if git clone --quiet --depth=1 "$position" -b "$branch"; then
+            x log :yanfa "[$mod/$branch] Cloning success."
+            exit 0
+        fi
         x log :yanfa warn "<release-add> Fail to git clone. Retry it after 5 seconds"
         if ! sleep 5; then
             x log :yanfa warn "<release-add> Sleep interrupted."
