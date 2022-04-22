@@ -155,13 +155,21 @@ ___x_cmd_yanfa_release_7z()(
 ___x_cmd_yanfa_release_pub()(
     param:void
     # set -o errexit
-    x log :yanfa warn "<release-pub> update"
-    ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
-    x log :yanfa warn "<release-pub> create tgz"
-    ___x_cmd_yanfa_release_tgz "$@"
-    git add .
-    git commit -m ...
-    ___x_cmd_yanfa_ws_push
+    if {
+        x log :yanfa warn "<release-pub> update"
+        ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
+    } && {
+        x log :yanfa warn "<release-pub> create tgz"
+        ___x_cmd_yanfa_release_tgz "$@"
+    } && {
+        x log :yanfa warn "<release-pub> Add && Commit && Push"
+        git add . && git commit -m ... && ___x_cmd_yanfa_ws_push
+
+    }; then
+        x log :yanfa warn "<release-pub> OK"
+    else
+        x log :yanfa warn "<release-pub> Fail"
+    fi
 )
 
 ___x_cmd_yanfa_release(){
