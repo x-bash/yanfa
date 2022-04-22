@@ -20,7 +20,7 @@ ___x_cmd_yanfa_release_add()(
 
     cd "$___X_CMD_YANFA_RELEASE_TMP" || exit 1
     for ((i=1; i<=3; i=i+1)); do
-        git clone --depth=1 "$position" -b "$branch" && exit 0
+        git clone --quiet --depth=1 "$position" -b "$branch" && exit 0
         x log :yanfa warn "<release-add> Fail to git clone. Retry it after 5 seconds"
         if ! sleep 5; then
             x log :yanfa warn "<release-add> Sleep interrupted."
@@ -150,13 +150,14 @@ ___x_cmd_yanfa_release_7z()(
 
 ___x_cmd_yanfa_release_pub()(
     param:void
-    set -o errexit
+    # set -o errexit
+    x log :yanfa warn "<release-pub> update"
     ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
+    x log :yanfa warn "<release-pub> create tgz"
     ___x_cmd_yanfa_release_tgz "$@"
     git add .
     git commit -m ...
-    ___x_cmd_yanfa_ws_push && return 0
-    return 1
+    ___x_cmd_yanfa_ws_push
 )
 
 ___x_cmd_yanfa_release(){
