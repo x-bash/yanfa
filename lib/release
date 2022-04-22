@@ -43,7 +43,7 @@ ___x_cmd_yanfa_release_update(){
         while read -r mod; do
             # OUT=/dev/null
             x job put "${1:-7}" ___x_cmd_yanfa_release_add "$mod"
-            printf "%s\n" "Cloning: $mod" >&2
+            # printf "%s\n" "Cloning: $mod" >&2
         done
 
         x job wait
@@ -124,7 +124,7 @@ ___x_cmd_yanfa_release_tgz()(
 
     cd "$WSROOT/mod" &&
         mkdir -p "$WSROOT/dist" &&
-        tar czvf "$scope.tgz" * &&
+        tar czf "$scope.tgz" * &&
         mv "$scope.tgz" "$WSROOT/dist/$scope.tgz" &&
         ls -alh "$WSROOT/dist/$scope.tgz"
 )
@@ -148,11 +148,16 @@ ___x_cmd_yanfa_release_7z()(
 
 # EndSection
 
-___x_cmd_yanfa_release_pub(){
+___x_cmd_yanfa_release_pub()(
     param:void
-    ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}" && ___x_cmd_yanfa_release_tgz "$@" && git add . && git commit -m ... && ___x_cmd_yanfa_ws_push && return 0
+    set -o errexit
+    ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
+    ___x_cmd_yanfa_release_tgz "$@"
+    git add .
+    git commit -m ...
+    ___x_cmd_yanfa_ws_push && return 0
     return 1
-}
+)
 
 ___x_cmd_yanfa_release(){
 
