@@ -122,6 +122,8 @@ ___x_cmd_yanfa_release_tgz()(
 
     WSROOT="$(x wsroot)"
 
+    [ -f "$scope.tgz" ] && rm "$scope.tgz"
+
     cd "$WSROOT/mod" &&
         mkdir -p "$WSROOT/dist" &&
         tar czf "$scope.tgz" * &&
