@@ -89,9 +89,13 @@ ___x_cmd_yanfa_release_cpfile_inner(){
     if [ -d "$2" ]; then
         local p="$2/$1"
         [ -d "${p%/*}" ] || mkdir -p "${p%/*}"
-        cp "$1" "$p"
+        if ! cp "$1" "$p"; then
+            x log :yanfa warn fail to cp [src=$1] to [dst=$p]
+        fi
     else
-        cp "$1" "$2"
+        if ! cp "$1" "$2"; then
+            x log :yanfa warn fail to cp [src=$1] to [dst=$2]
+        fi
     fi
 }
 
