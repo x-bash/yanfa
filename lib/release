@@ -59,6 +59,8 @@ ___x_cmd_yanfa_release_update(){
                 printf "%s\n" "---------------"
         esac
     done
+
+    x log :yanfa "<release-cpfile> Starting"
     ___x_cmd_yanfa_release_cpfile
 }
 
