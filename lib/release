@@ -1,5 +1,56 @@
 # shellcheck shell=sh disable=SC3043
 
+# Section: main
+___x_cmd_yanfa_release(){
+
+    if [ -f "$(x wsroot)/.x-cmd/$1" ]; then
+        x _ws "$@"
+        return
+    fi
+
+    param:dsl <<A
+subcommand:
+    install         "install all modules"
+
+    update          "update or add module"
+    pub             "publish the package"
+    lsmod           "ls module"
+    lsfile          ""
+    wc              "count"
+
+    tgz             "compress modules of core/all/<special-release> into <name>.tgz"
+    tar             "compress modules"
+    7z              "compress modules of 7z"
+
+    init            "init"
+
+    pull            "pull"
+    push            "push"
+    name            "get workspace name from git config"
+A
+    param:run
+
+    if [ -z "$PARAM_SUBCMD" ]; then
+        ___x_cmd_yanfa_release help
+        return 1
+    fi
+
+    if command -v "___x_cmd_yanfa_release_${PARAM_SUBCMD}" >/dev/null; then
+        "___x_cmd_yanfa_release_${PARAM_SUBCMD}" "$@"
+    else
+        case "$PARAM_SUBCMD" in
+            pull|push|name)
+                "___x_cmd_yanfa_ws_$PARAM_SUBCMD" "$@"
+                ;;
+            init)
+                "___x_cmd_yanfa_init" "$@"
+        esac
+    fi
+
+}
+# EndSection
+
+# Section: module add pull update
 ___x_cmd_yanfa_release_gitx(){
     if [ -z "$___X_CMD_IN_CHINA_NET" ]; then
         printf "%s\n" "github.com"
@@ -11,7 +62,6 @@ ___x_cmd_yanfa_release_gitx(){
 ___X_CMD_YANFA_RELEASE_TMP="${TMPDIR}/release/mod"
 
 
-# Section: module add pull update
 ___x_cmd_yanfa_release_add()(
     local name="${1:?Provide module name}"
     # local position="${2:-"git@gitee.com/x-bash/$name.git"}"
@@ -122,8 +172,6 @@ ___x_cmd_yanfa_release_wc(){
 
 # EndSection
 
-
-
 ___x_cmd_yanfa_release_pub()(
     param:void
     # set -o errexit
@@ -146,53 +194,6 @@ ___x_cmd_yanfa_release_pub()(
     fi
 )
 
-___x_cmd_yanfa_release(){
-
-    if [ -f "$(x wsroot)/.x-cmd/$1" ]; then
-        x _ws "$@"
-        return
-    fi
-
-    param:dsl <<A
-subcommand:
-    install         "install all modules"
-
-    update          "update or add module"
-    pub             "publish the package"
-    lsmod           "ls module"
-    lsfile          ""
-    wc              "count"
-
-    tgz             "compress modules of core/all/<special-release> into <name>.tgz"
-    tar             "compress modules"
-    7z              "compress modules of 7z"
-
-    init            "init"
-
-    pull            "pull"
-    push            "push"
-    name            "get workspace name from git config"
-A
-    param:run
-
-    if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_yanfa_release help
-        return 1
-    fi
-
-    if command -v "___x_cmd_yanfa_release_${PARAM_SUBCMD}" >/dev/null; then
-        "___x_cmd_yanfa_release_${PARAM_SUBCMD}" "$@"
-    else
-        case "$PARAM_SUBCMD" in
-            pull|push|name)
-                "___x_cmd_yanfa_ws_$PARAM_SUBCMD" "$@"
-                ;;
-            init)
-                "___x_cmd_yanfa_init" "$@"
-        esac
-    fi
-
-}
 
 # Section: tgz tar 7z
 
