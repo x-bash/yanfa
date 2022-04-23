@@ -55,20 +55,20 @@ ___x_cmd_yanfa_release_pub()(
     param:void
     # set -o errexit
     if {
-        x log :yanfa warn "<release-pub> update"
+        yanfa:info "<release-pub> update"
         ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
     } && {
-        x log :yanfa warn "<release-pub> create tgz"
+        yanfa:info "<release-pub> create tgz"
         ___x_cmd_yanfa_release_tgz "$@"
-        x log :yanfa warn "<release-pub> create tgz exit: $?"
+        yanfa:info "<release-pub> create tgz exit: $?"
     } && {
-        x log :yanfa warn "<release-pub> Add && Commit && Push"
+        yanfa:info "<release-pub> Add && Commit && Push"
         git add . && git commit -m ... && ___x_cmd_yanfa_ws_push
-        x log :yanfa warn "<release-pub> Add && Commit && Push exit: $?"
+        yanfa:info "<release-pub> Add && Commit && Push exit: $?"
     }; then
-        x log :yanfa warn "<release-pub> OK"
+        yanfa:info "<release-pub> OK"
     else
-        x log :yanfa warn "<release-pub> Fail"
+        yanfa:info "<release-pub> Fail"
         return 1
     fi
 )
@@ -96,15 +96,15 @@ ___x_cmd_yanfa_release_add()(
 
     for ((i=1; i<=3; i=i+1)); do
         if git clone --quiet --depth=1 "$position" -b "$branch"; then
-            x log :yanfa "<release-add> [$mod/$branch] Cloning success from $position"
+            yanfa:debug "<release-add> [$mod/$branch] Cloning success from $position"
             exit 0
         fi
-        x log :yanfa warn "<release-add> Fail to git clone. Retry it after 5 seconds"
+        yanfa:info "<release-add> Fail to git clone. Retry it after 5 seconds"
         if ! sleep 5; then
-            x log :yanfa warn "<release-add> Sleep interrupted."
+            yanfa:info "<release-add> Sleep interrupted."
         fi
     done
-    x log :yanfa error "<release-add> Fail to git clone after 3 attemps. Mission abort."
+    yanfa:debug error "<release-add> Fail to git clone after 3 attemps. Mission abort."
     exit 1
 )
 
@@ -134,9 +134,9 @@ ___x_cmd_yanfa_release_update(){
         esac
     done
 
-    x log :yanfa "<release-cpfile> Starting"
+    yanfa:debug "<release-cpfile> Starting"
     ___x_cmd_yanfa_release_cpfile
-    x log :yanfa "<release-cpfile> exit: $?"
+    yanfa:debug "<release-cpfile> exit: $?"
 }
 
 # EndSection
@@ -147,7 +147,7 @@ ___x_cmd_yanfa_release_lsmod(){
     param:void
     ___x_cmd_yanfa_mod_ls "$@"
     local code=$?
-    x log :yanfa warn "___x_cmd_yanfa_release_lsmod: $?"
+    yanfa:info "___x_cmd_yanfa_release_lsmod: $?"
     return $code
 }
 
@@ -163,7 +163,7 @@ ___x_cmd_yanfa_release_lsfile()(
     )
 
     local code=$?
-    x log :yanfa warn "___x_cmd_yanfa_release_lsfile: $?"
+    yanfa:info "___x_cmd_yanfa_release_lsfile: $?"
     return $code
 )
 
@@ -172,11 +172,11 @@ ___x_cmd_yanfa_release_cpfile_inner(){
         local p="$2/$1"
         [ -d "${p%/*}" ] || mkdir -p "${p%/*}"
         if ! cp "$1" "$p"; then
-            x log :yanfa warn fail to cp [src=$1] to [dst=$p]
+            yanfa:info fail to cp [src=$1] to [dst=$p]
         fi
     else
         if ! cp "$1" "$2"; then
-            x log :yanfa warn fail to cp [src=$1] to [dst=$2]
+            yanfa:info fail to cp [src=$1] to [dst=$2]
         fi
     fi
 }
@@ -189,10 +189,10 @@ ___x_cmd_yanfa_release_cpfile()(
 
     cd "$___X_CMD_YANFA_RELEASE_TMP" && ___x_cmd_yanfa_release_lsfile | while read -r line; do
         ___x_cmd_yanfa_release_cpfile_inner "$line" "$tgt"
-        # x log :yanfa "<release_cpfile> $line => $tgt: $?"
+        # yanfa:debug "<release_cpfile> $line => $tgt: $?"
     done
     # TODO: In Github Action, it return 1. Resulting in breaking. cpfile_inner is OK. The bug might be in while pipe.
-    x log :yanfa "<release_cpfile> exit: $?"
+    yanfa:debug "<release_cpfile> exit: $?"
 )
 
 ___x_cmd_yanfa_release_wc(){
