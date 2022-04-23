@@ -92,8 +92,6 @@ ___x_cmd_yanfa_release_add()(
     local position="${2:-"https://$(___x_cmd_yanfa_release_gitx)/x-bash/$name.git"}"
     local branch="${3:-main}"
 
-    yanfa:info "<release-add> $name $position"
-
     cd "$___X_CMD_YANFA_RELEASE_TMP" || exit 1
 
     for ((i=1; i<=3; i=i+1)); do
@@ -120,9 +118,7 @@ ___x_cmd_yanfa_release_update(){
     mkdir -p "$___X_CMD_YANFA_RELEASE_TMP"
 
     ___x_cmd_yanfa_release_lsmod | {
-        yanfa:warn "<release-update> XXXXXXX Staring read $mod"
         while read -r mod; do
-            yanfa:warn "<release-update> XXXXXXX ___x_cmd_yanfa_release_add $mod"
             # OUT=/dev/null
             x job put "${1:-7}" ___x_cmd_yanfa_release_add "$mod"
         done
