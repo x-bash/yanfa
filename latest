@@ -4,6 +4,7 @@
 xrc param/latest
 
 x log init yanfa
+x log yanfa/debug
 
 xrc:mod:lib yanfa   all ws mod pkg init try git release
 

@@ -150,6 +150,7 @@ ___x_cmd_yanfa_mod_ls(){
         fi
     fi
 
+    x log :yanfa "Getting source from local modlist: $fp"
     ___x_cmd_yanfa_mod_ls_awk_ "$@" <"$fp"
 }
 
