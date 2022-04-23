@@ -147,7 +147,7 @@ ___x_cmd_yanfa_release_lsmod(){
     param:void
     ___x_cmd_yanfa_mod_ls "$@"
     local code=$?
-    yanfa:info "___x_cmd_yanfa_release_lsmod: $?"
+    yanfa:info "___x_cmd_yanfa_release_lsmod: $code"
     return $code
 }
 
@@ -163,7 +163,7 @@ ___x_cmd_yanfa_release_lsfile()(
     )
 
     local code=$?
-    yanfa:info "___x_cmd_yanfa_release_lsfile: $?"
+    yanfa:info "___x_cmd_yanfa_release_lsfile: $code"
     return $code
 )
 
