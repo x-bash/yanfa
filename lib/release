@@ -122,45 +122,7 @@ ___x_cmd_yanfa_release_wc(){
 
 # EndSection
 
-# Section: tgz tar 7z
 
-___x_cmd_yanfa_release_tgz()(
-    param:void
-    case "${1:-all}" in
-        core)       scope=core ;;
-        all)        scope=all ;;
-        *)          return 1 ;;
-    esac
-
-    WSROOT="$(x wsroot)"
-
-    [ -f "$scope.tgz" ] && rm "$scope.tgz"
-
-    cd "$WSROOT/mod" &&
-        mkdir -p "$WSROOT/dist" &&
-        tar czf "$scope.tgz" * 2>/dev/null &&
-        mv "$scope.tgz" "$WSROOT/dist/$scope.tgz" &&
-        ls -alh "$WSROOT/dist/$scope.tgz"
-)
-
-___x_cmd_yanfa_release_7z()(
-    param:void
-    case "${1:-all}" in
-        core)       scope=core ;;
-        all)        scope=all ;;
-        *)          return 1 ;;
-    esac
-
-    WSROOT="$(x wsroot)"
-
-    cd "$WSROOT/mod" &&
-        mkdir -p "$WSROOT/dist" &&
-        7z a "$scope.7z" * &&
-        mv "$scope.7z" "$WSROOT/dist/$scope.7z" &&
-        ls -alh "$WSROOT/dist/$scope.7z"
-)
-
-# EndSection
 
 ___x_cmd_yanfa_release_pub()(
     param:void
@@ -231,3 +193,43 @@ A
     fi
 
 }
+
+# Section: tgz tar 7z
+
+___x_cmd_yanfa_release_tgz()(
+    param:void
+    case "${1:-all}" in
+        core)       scope=core ;;
+        all)        scope=all ;;
+        *)          return 1 ;;
+    esac
+
+    WSROOT="$(x wsroot)"
+
+    [ -f "$scope.tgz" ] && rm "$scope.tgz"
+
+    cd "$WSROOT/mod" &&
+        mkdir -p "$WSROOT/dist" &&
+        tar czf "$scope.tgz" * 2>/dev/null &&
+        mv "$scope.tgz" "$WSROOT/dist/$scope.tgz" &&
+        ls -alh "$WSROOT/dist/$scope.tgz"
+)
+
+___x_cmd_yanfa_release_7z()(
+    param:void
+    case "${1:-all}" in
+        core)       scope=core ;;
+        all)        scope=all ;;
+        *)          return 1 ;;
+    esac
+
+    WSROOT="$(x wsroot)"
+
+    cd "$WSROOT/mod" &&
+        mkdir -p "$WSROOT/dist" &&
+        7z a "$scope.7z" * &&
+        mv "$scope.7z" "$WSROOT/dist/$scope.7z" &&
+        ls -alh "$WSROOT/dist/$scope.7z"
+)
+
+# EndSection
