@@ -196,8 +196,6 @@ ___x_cmd_yanfa_release_wc(){
 
 # EndSection
 
-
-
 # Section: tgz tar 7z
 
 ___x_cmd_yanfa_release_tgz()(
