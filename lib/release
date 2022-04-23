@@ -146,6 +146,9 @@ ___x_cmd_yanfa_release_update(){
 ___x_cmd_yanfa_release_lsmod(){
     param:void
     ___x_cmd_yanfa_mod_ls "$@"
+    local code=$?
+    x log :yanfa "___x_cmd_yanfa_release_lsmod: $?"
+    return $code
 }
 
 ___x_cmd_yanfa_release_lsfile()(
@@ -158,6 +161,10 @@ ___x_cmd_yanfa_release_lsfile()(
             ( cd "$line" && ___x_cmd_yanfa_mod_lsfile | x arg1 printf "%s/%s\n" "$line" )
         done
     )
+
+    local code=$?
+    x log :yanfa "___x_cmd_yanfa_release_lsfile: $?"
+    return $code
 )
 
 ___x_cmd_yanfa_release_cpfile_inner(){
