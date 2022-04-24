@@ -34,7 +34,7 @@ ___x_cmd_yanfa_mod_lsfile()(
 ___x_cmd_yanfa_mod_install_tmp(){
     local src="$2"
     local dst="$1/$src"
-    yanfa:info "$(printf "Moving:   %-30s\t%s\n" "$src" "$dst")"
+    yanfa:debug "$(printf "Moving:   %-30s\t%s\n" "$src" "$dst")"
     mkdir -p "$(dirname "$dst")"
     cp "$src" "$dst"
 }
@@ -69,7 +69,6 @@ ___x_cmd_yanfa_mod_install()(
                     *.json)     json=$(( json+1 )) ;;
                     *)          sh=$(( sh + 1 )) ;;
                 esac
-                yanfa:debug "Installing script from $line to $current_folder"
                 ___x_cmd_yanfa_mod_install_tmp "$current_folder" "$line"
             done
             x log :yanfa info "Finish with $total files installed in $current_folder: sh=$sh awk=$awk json=$json txt=$txt"
