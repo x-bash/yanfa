@@ -55,14 +55,24 @@ ___x_cmd_yanfa_mod_install()(
         yanfa:info "Running module yanfa subcmd: install to $current_folder"
 
         ___x_cmd_yanfa_mod_lsfile | {
-            i=0
+            awk=0
+            sh=0
+            txt=0
+            json=0
+            total=0
             while read -r line; do
                 res="$res\t$line"
-                (( i++ ))
+                total=$(( total + 1 ))
+                case "$line" in
+                    *.txt)      txt=$(( txt+1 )) ;;
+                    *.awk)      awk=$(( awk+1 )) ;;
+                    *.json)     json=$(( json+1 )) ;;
+                    *)          sh=$(( sh + 1 )) ;;
+                esac
                 yanfa:debug "Installing script from $line to $current_folder"
                 ___x_cmd_yanfa_mod_install_tmp "$current_folder" "$line"
             done
-            x log :yanfa info "Finish with $i files installed in $current_folder"
+            x log :yanfa info "Finish with $total files installed in $current_folder: sh=$sh awk=$awk json=$json txt=$txt"
         }
 
         # buggy code
