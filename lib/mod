@@ -35,23 +35,25 @@ ___x_cmd_yanfa_mod_install_tmp(){
     local src="$2"
     local dst="$1/$src"
     mkdir -p "$(dirname "$dst")"
-    printf "Moving:   %-30s\t%s\n" "$src" "$dst"
+    yanfa:info "$(printf "Moving:   %-30s\t%s\n" "$src" "$dst")"
     cp "$src" "$dst"
 }
 
 ___x_cmd_yanfa_mod_install()(
     param:void
     local current_folder
-    current_folder="$(basename "$(x wsroot)")"
-    current_folder="$HOME/.x-cmd/$current_folder"
-    rm -rf "$current_folder"
-    mkdir -p "$current_folder"
+    current_folder="$HOME/.x-cmd/$(basename "$(x wsroot)")"
+    [ ! -d "$current_folder" ] || (
+        rm -rf "$current_folder" && mkdir -p "$current_folder"
+    )
 
     if [ -f "$(x wsroot)/.x-cmd/install" ]; then
+        yanfa:info "Running in workspace: install"
         # TODO: using engine to directly run the local file
-        X_DISABLE_WORKSPACE_EXECUTION_CONFIRMATION=1 x ws install "$@"
+        x ws install "$@"
     else
         ___x_cmd_yanfa_mod_lsfile | x arg1 ___x_cmd_yanfa_mod_install_tmp "$current_folder"
+
     fi
 )
 
