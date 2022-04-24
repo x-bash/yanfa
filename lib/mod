@@ -54,18 +54,19 @@ ___x_cmd_yanfa_mod_install()(
     else
         yanfa:info "Running module yanfa subcmd: install to $current_folder"
 
-        local res
-        local i
-        ___x_cmd_yanfa_mod_lsfile | while read -r line; do
-            res="$res\t$line"
-            (( i++ ))
-            yanfa:debug "Installing script from $line to $current_folder"
-            ___x_cmd_yanfa_mod_install_tmp "$current_folder" "$line"
-        done
+        ___x_cmd_yanfa_mod_lsfile | {
+            i=0
+            while read -r line; do
+                res="$res\t$line"
+                (( i++ ))
+                yanfa:debug "Installing script from $line to $current_folder"
+                ___x_cmd_yanfa_mod_install_tmp "$current_folder" "$line"
+            done
+            x log :yanfa info "Finish with $i files installed in $current_folder"
+        }
 
         # buggy code
         # ___x_cmd_yanfa_mod_lsfile | ___x_cmd_args 1 ___x_cmd_yanfa_mod_install_tmp "$current_folder"
-        x log :yanfa info "Finish with $i files installed in $current_folder"
     fi
 )
 
