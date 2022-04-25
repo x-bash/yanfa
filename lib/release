@@ -97,15 +97,15 @@ ___x_cmd_yanfa_release_add()(
 
     for ((i=1; i<=3; i=i+1)); do
         if git clone --quiet --depth=1 "$position" -b "$branch"; then
-            yanfa:debug "<release-add> [$mod/$branch] Cloning success from $position"
+            yanfa:debug "[$mod/$branch] Cloning success from $position"
             exit 0
         fi
-        yanfa:info "<release-add> Fail to git clone. Retry it after 5 seconds"
+        yanfa:info "Fail to git clone. Retry it after 5 seconds"
         if ! sleep 5; then
-            yanfa:info "<release-add> Sleep interrupted."
+            yanfa:info "Sleep interrupted."
         fi
     done
-    yanfa:debug error "<release-add> Fail to git clone after 3 attemps. Mission abort."
+    yanfa:debug error "Fail to git clone after 3 attemps. Mission abort."
     exit 1
 )
 
@@ -136,9 +136,9 @@ ___x_cmd_yanfa_release_update(){
         esac
     done
 
-    yanfa:debug "<release-cpfile> Starting"
+    yanfa:debug "Starting CPFILE"
     ___x_cmd_yanfa_release_cpfile
-    yanfa:debug "<release-cpfile> exit: $?"
+    yanfa:debug "FINISIH CPFILE exit: $?"
 }
 
 # EndSection
@@ -197,6 +197,7 @@ ___x_cmd_yanfa_release_cpfile_inner(){
 
 ___x_cmd_yanfa_release_cpfile()(
     x:trace yanfa/relesae/cpfile
+    yanfa:debug "Staring"
     local tgt
     tgt="$(x wsroot)/mod"
     [ -d "$tgt" ] && rm -rf "$tgt"
@@ -210,7 +211,7 @@ ___x_cmd_yanfa_release_cpfile()(
         )
     done
     # TODO: In Github Action, it return 1. Resulting in breaking. cpfile_inner is OK. The bug might be in while pipe.
-    yanfa:debug "<release_cpfile> exit: $?"
+    yanfa:debug "exit: $?"
 )
 
 ___x_cmd_yanfa_release_wc(){
