@@ -33,7 +33,6 @@ ___x_cmd_yanfa_mod_lsfile()(
 )
 
 ___x_cmd_yanfa_mod_install_tmp(){
-    x:trace yanfa/mod/install/tmp
     local src="$2"
     local dst="$1/$src"
     yanfa:debug "$(printf "Moving:   %-30s\t%s\n" "$src" "$dst")"
