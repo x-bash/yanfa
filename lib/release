@@ -145,6 +145,7 @@ ___x_cmd_yanfa_release_update(){
 
 # shellcheck disable=SC2120
 ___x_cmd_yanfa_release_lsmod(){
+    x:trace yanfa/relesae/lsmod
     param:void
     ___x_cmd_yanfa_mod_ls "$@"
     local code=$?
@@ -153,6 +154,7 @@ ___x_cmd_yanfa_release_lsmod(){
 }
 
 ___x_cmd_yanfa_release_lsfile()(
+    x:trace yanfa/relesae/lsfile
     param:void
     [ -d "$___X_CMD_YANFA_RELEASE_TMP" ] || return 1
 
@@ -177,6 +179,7 @@ ___x_cmd_yanfa_release_lsfile()(
 )
 
 ___x_cmd_yanfa_release_cpfile_inner(){
+    # x:trace yanfa/relesae/cpfile/inner        # Use debug
     if [ -d "$2" ]; then
         local p="$2/$1"
         [ -d "${p%/*}" ] || mkdir -p "${p%/*}"
@@ -191,6 +194,7 @@ ___x_cmd_yanfa_release_cpfile_inner(){
 }
 
 ___x_cmd_yanfa_release_cpfile()(
+    x:trace yanfa/relesae/cpfile
     local tgt
     tgt="$(x wsroot)/mod"
     [ -d "$tgt" ] && rm -rf "$tgt"
@@ -208,6 +212,7 @@ ___x_cmd_yanfa_release_cpfile()(
 )
 
 ___x_cmd_yanfa_release_wc(){
+    x:trace yanfa/relesae/wc
     param:void
     cd "$(x wsroot)/mod" &&
         ___x_cmd_yanfa_release_lsfile "$@" | xargs wc | sort -n -r | less
