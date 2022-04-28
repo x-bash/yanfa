@@ -59,6 +59,7 @@ ___x_cmd_yanfa_release_pub()(
     if {
         yanfa:info "update"
         ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
+        return
     } && {
         yanfa:info "create tgz"
         ___x_cmd_yanfa_release_tgz "$@"
@@ -172,13 +173,13 @@ ___x_cmd_yanfa_release_lsfile()(
                 # else
                 #     ___x_cmd_yanfa_mod_lsfile | x arg1 printf "%s/%s\n" "$line"
                 # fi
-                cd "$line" && ___x_cmd_yanfa_mod_lsfile | x arg1 printf "%s/%s\n" "$line"
+                cd "$line" && ___x_cmd_yanfa_mod_lsfile | x arg1 'printf "%s/%s\n" "$line" "$1"'
             )
         done
     )
 
     local code=$?
-    yanfa:info "___x_cmd_yanfa_release_lsfile: $code"
+    yanfa:info "___x_cmd_yanfa_release_lsfile"
     return $code
 )
 
@@ -209,7 +210,7 @@ ___x_cmd_yanfa_release_cpfile()(
         (
             cd "$___X_CMD_YANFA_RELEASE_TMP"
             ___x_cmd_yanfa_release_cpfile_inner "$line" "$tgt"
-            # yanfa:debug "<release_cpfile> $line => $tgt: $?"
+            yanfa:debug "<release_cpfile> $line => $tgt: $?"
         )
     done
     # TODO: In Github Action, it return 1. Resulting in breaking. cpfile_inner is OK. The bug might be in while pipe.
