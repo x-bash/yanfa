@@ -59,7 +59,7 @@ ___x_cmd_yanfa_release_pub()(
     if {
         yanfa:info "update"
         ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
-        return
+        # return
     } && {
         yanfa:info "create tgz"
         ___x_cmd_yanfa_release_tgz "$@"
