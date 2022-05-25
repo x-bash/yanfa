@@ -99,7 +99,8 @@ A
 $awk_list
 A
             awk_line="$___X_CMD_YANFA_MOD_CODE_LINE"
-            yanfa:info "Installed $total files: sh=$sh/${sh_line} awk=$awk/${awk_line} json=$json txt=$txt"
+            yanfa:info "Installed $total files: sh=$sh awk=$awk json=$json txt=$txt"
+            yanfa:info "Lines: total=  sh=${sh_line} awk=${awk_line}"
         }
 
         # buggy code
