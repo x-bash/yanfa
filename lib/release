@@ -204,7 +204,7 @@ ___x_cmd_yanfa_release_cpfile()(
     [ -d "$tgt" ] && rm -rf "$tgt"
     mkdir -p "$tgt"
 
-    x rmrf "$___X_CMD_YANFA_RELEASE_TMP/repo.txt"
+    x rmrf "$tgt/repo.txt"
     (
         ___x_cmd_yanfa_release_lsmod |
             while read -r mod; do
