@@ -99,6 +99,12 @@ ___x_cmd_yanfa_release_add()(
     i=1
     while [ "$i" -le "${RETRY:-3}" ]; do
         if git clone --quiet --depth=1 "$position" -b "$branch"; then
+            (
+                cd "$name"
+                printf "%s  " "$name"
+                git rev-parse head
+            ) >>repo.txt
+
             yanfa:info "[$mod/$branch] Cloning success from $position"
             exit 0
         fi
