@@ -81,6 +81,26 @@ ___x_cmd_yanfa_all_update(){
     '
 }
 
+# ___x_cmd_yanfa_git_update_all(){
+#     {
+#         while read -r mod; do
+#             # OUT=/dev/null
+#             x job put 7 ___x_cmd_yanfa_pkg_update_main "$mod"
+#             printf "%s\n" "Update: $mod" >&2
+#         done
+
+#         x job wait
+#     } | while read -r line; do
+#         printf "%s\n" "$line"
+#         case "$line" in
+#             Write*)
+#                 printf "%s\n" "---------------"
+#                 cat "${line#Write: }"
+#                 printf "%s\n" "---------------"
+#         esac
+#     done
+# }
+
 ___x_cmd_yanfa_all_ls(){
     param:void
     ___x_cmd_yanfa_mod_ls "$@"
