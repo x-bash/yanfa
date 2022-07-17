@@ -106,6 +106,7 @@ ___x_cmd_yanfa_all_update(){
     done
 
     x job wait
+    echo "Stop Now..."
 }
 
 ___x_cmd_yanfa_all_ls(){
