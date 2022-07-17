@@ -106,7 +106,7 @@ ___x_cmd_yanfa_all_update()(
     done
 
     x job wait
-    sleep 3 # We have to rethink of it
+    sleep 3 # We have to reconsider it
 )
 
 ___x_cmd_yanfa_all_ls(){
