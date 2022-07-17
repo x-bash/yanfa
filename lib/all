@@ -89,7 +89,7 @@ ____x_cmd_yanfa_git_clone_update(){
     fi
 }
 
-___x_cmd_yanfa_all_update(){
+___x_cmd_yanfa_all_update()(
     local dir="${1:-$HOME}"
 
     local ___X_CMD_JOB_WRAPPER=silent
@@ -106,8 +106,8 @@ ___x_cmd_yanfa_all_update(){
     done
 
     x job wait
-    sleep 1
-}
+    sleep 3 # We have to rethink of it
+)
 
 ___x_cmd_yanfa_all_ls(){
     param:void
