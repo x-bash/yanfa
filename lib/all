@@ -5,19 +5,18 @@
 ___x_cmd_yanfa_all(){
     param:dsl <<A
 subcommand:
-    repolist    "Show all repo"
-    repo        "clone or update all repos"
-    clone       "clone"
-    map         "map"
     ls          "list modules"
+    update      "clone or update all repos"
+    repolist    "Show all repo"
+    map         "map"
 A
     param:run
     # push        "push"
     # pull        "pull"
 
     if [ -z "${PARAM_SUBCMD}" ]; then
-        ___x_cmd_yanfa_all help
-        return 0
+        ___x_cmd_yanfa_all_update
+        return
     fi
 
     "___x_cmd_yanfa_all_${PARAM_SUBCMD}" "$@"
@@ -71,14 +70,7 @@ ___x_cmd_yanfa_all_map(){
 }
 
 # shellcheck disable=SC2016
-___x_cmd_yanfa_all_clone(){
-    param:void
-    ___x_cmd_yanfa_all_map "${1:-$HOME}" \
-        'git clone "git@gitee.com:$org/$name.git"'
-}
-
-# shellcheck disable=SC2016
-___x_cmd_yanfa_all_repo(){
+___x_cmd_yanfa_all_update(){
     param:void
     ___x_cmd_yanfa_all_map "${1:-$HOME}" '
         if [ -d "$name" ]; then
@@ -88,6 +80,26 @@ ___x_cmd_yanfa_all_repo(){
         fi
     '
 }
+
+# ___x_cmd_yanfa_git_update_all(){
+#     {
+#         while read -r mod; do
+#             # OUT=/dev/null
+#             x job put 7 ___x_cmd_yanfa_pkg_update_main "$mod"
+#             printf "%s\n" "Update: $mod" >&2
+#         done
+
+#         x job wait
+#     } | while read -r line; do
+#         printf "%s\n" "$line"
+#         case "$line" in
+#             Write*)
+#                 printf "%s\n" "---------------"
+#                 cat "${line#Write: }"
+#                 printf "%s\n" "---------------"
+#         esac
+#     done
+# }
 
 ___x_cmd_yanfa_all_ls(){
     param:void
