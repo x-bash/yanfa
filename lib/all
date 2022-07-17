@@ -89,20 +89,44 @@ ____x_cmd_yanfa_git_clone_update(){
     fi
 }
 
+# ___x_cmd_yanfa_all_update()(
+#     local dir="${1:-$HOME}"
+
+#     local ___X_CMD_JOB_WRAPPER=silent
+
+#     mkdir -p "$dir/x-bash" "$dir/x-cmd"
+#     cd "$dir/x-bash" || return
+#     ___x_cmd_yanfa_all_ls | while read -r mod; do
+#         x job put 7 org=x-bash name="$mod" ____x_cmd_yanfa_git_clone_update
+#     done
+
+#     cd "$dir/x-cmd" || return
+#     ___x_cmd_yanfa_all_repolist | while read -r mod; do
+#         x job put 7 org=x-cmd name="$mod" ____x_cmd_yanfa_git_clone_update
+#     done
+
+#     x job wait
+#     sleep 3 # We have to reconsider it
+# )
+
 ___x_cmd_yanfa_all_update()(
-    local dir="${1:-$HOME}"
+    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_clone_update
+)
+
+___x_cmd_yanfa_all_foreach()(
+    local dir="${1:-$HOME}"; shift
 
     local ___X_CMD_JOB_WRAPPER=silent
 
     mkdir -p "$dir/x-bash" "$dir/x-cmd"
     cd "$dir/x-bash" || return
     ___x_cmd_yanfa_all_ls | while read -r mod; do
-        x job put 7 org=x-bash name="$mod" ____x_cmd_yanfa_git_clone_update
+        x job put 7 org=x-bash name="$mod" "$@"
     done
 
     cd "$dir/x-cmd" || return
     ___x_cmd_yanfa_all_repolist | while read -r mod; do
-        x job put 7 org=x-cmd name="$mod" ____x_cmd_yanfa_git_clone_update
+        x job put 7 org=x-cmd name="$mod" "$@"
     done
 
     x job wait
