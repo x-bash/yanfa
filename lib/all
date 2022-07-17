@@ -89,7 +89,7 @@ ____x_cmd_yanfa_git_clone_update(){
     fi
 }
 
-___x_cmd_yanfa_git_update(){
+___x_cmd_yanfa_all_update(){
     local dir="${1:-$HOME}"
 
     local ___X_CMD_JOB_WRAPPER=silent
