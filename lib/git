@@ -22,12 +22,16 @@ ____x_cmd_yanfa_git_commit()(
     git commit -m "$MSG"
 )
 
-___x_cmd_yanfa_xb_update()(
-    ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update
-)
 
 ____x_cmd_yanfa_git_push()(
     cd "$name"
     xws push
 )
 
+____x_cmd_yanfa_git_update(){
+    if [ -d "$name" ]; then
+        ( cd "$name" && git pull && git pull origin main )
+    else
+        git clone "git@gitee.com:$org/$name.git"
+    fi
+}
