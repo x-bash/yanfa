@@ -19,7 +19,7 @@ giam(){
 
 ____x_cmd_yanfa_git_commit()(
     cd "$name"
-    git commit -m "$MSG"
+    git commit -m "${MSG:-...}"
 )
 
 
