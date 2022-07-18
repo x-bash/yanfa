@@ -42,7 +42,7 @@ ___x_cmd_yanfa_xc_foreach()(
     local ___X_CMD_JOB_WRAPPER=silent
 
     x mcd "$dir/x-cmd" || return 1
-    ___x_cmd_yanfa_xc_repolist | while read -r mod; do
+    ___x_cmd_yanfa_xc_ls | while read -r mod; do
         x job put "$___X_CMD_YANFA_CONCURRENCY" org=x-cmd name="$mod" "$@"
     done
 
