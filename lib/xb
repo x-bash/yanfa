@@ -44,8 +44,7 @@ ___x_cmd_yanfa_xb_foreach()(
 
     local ___X_CMD_JOB_WRAPPER=silent
 
-    mkdir -p "$dir/x-bash"
-    cd "$dir/x-bash" || return
+    x mcd "$dir/x-cmd" || return 1
     ___x_cmd_yanfa_xb_ls | while read -r mod; do
         x job put "$CONCURRENCY" org=x-bash name="$mod" "$@"
     done
