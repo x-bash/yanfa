@@ -40,13 +40,12 @@ ____x_cmd_yanfa_xc_push(){
 
 ___x_cmd_yanfa_xc_foreach()(
     local dir="${1:-$HOME}"; shift
-    local CONCURRENCY=10
 
     local ___X_CMD_JOB_WRAPPER=silent
 
     x mcd "$dir/x-cmd" || return 1
     ___x_cmd_yanfa_xc_repolist | while read -r mod; do
-        x job put "$CONCURRENCY" org=x-cmd name="$mod" "$@"
+        x job put "$___X_CMD_YANFA_CONCURRENCY" org=x-cmd name="$mod" "$@"
     done
 
     x job wait

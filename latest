@@ -9,6 +9,8 @@ xrc:mod:lib yanfa   all ws mod pkg init try git release xb xc
 
 # git config --worktree --get-regexp "remote[a-z\.]+.url"
 
+___X_CMD_YANFA_CONCURRENCY=10
+
 ___x_cmd_yanfa(){
     param:dsl <<A
 subcommand:
