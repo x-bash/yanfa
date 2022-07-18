@@ -24,7 +24,6 @@ A
 
 
 ____x_cmd_yanfa_xb_commit(){
-    local MSG="${1:-...}"; shift
     ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit
 }
 
@@ -34,7 +33,6 @@ ___x_cmd_yanfa_xb_update()(
 )
 
 ____x_cmd_yanfa_xb_push(){
-    local MSG="${1:-...}"; shift
     ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push
 }
 
