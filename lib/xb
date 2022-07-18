@@ -9,8 +9,6 @@ subcommand:
     update      "clone or update all repos"
     commit      "clone or update all repos"
     push        "clone or update all repos"
-    repolist    "Show all repo"
-    map         "map"
 A
     param:run
     # push        "push"
@@ -25,22 +23,6 @@ A
 }
 
 
-___x_cmd_yanfa_xb_repolist___one(){
-    # curl https://gitee.com/x-cmd/x-cmd/raw/main/repolist 2>/dev/null | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
-    ___x_cmd_httpget_gitx_official repolist | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
-}
-
-___x_cmd_yanfa_xb_repolist(){
-    param:void
-    local i
-    for i in 1 2 3; do
-        ! ___x_cmd_yanfa_xb_repolist___one || return 0
-        sleep 1
-    done
-    return 1
-}
-
-
 ____x_cmd_yanfa_git_update(){
     if [ -d "$name" ]; then
         ( cd "$name" && git pull && git pull origin main )
@@ -49,24 +31,12 @@ ____x_cmd_yanfa_git_update(){
     fi
 }
 
-___x_cmd_yanfa_xb_update()(
-    ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update
-)
-
-____x_cmd_yanfa_git_commit()(
-    cd "$name"
-    git commit -m "$MSG"
-)
-
 ____x_cmd_yanfa_xb_commit(){
     local MSG="${1:-...}"; shift
     ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit
 }
 
-____x_cmd_yanfa_git_push()(
-    cd "$name"
-    xws push
-)
+
 
 ____x_cmd_yanfa_xb_push(){
     local MSG="${1:-...}"; shift
