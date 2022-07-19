@@ -136,7 +136,9 @@ ___x_cmd_yanfa_mod_wc(){
 }
 
 ___x_cmd_yanfa_mod_test(){
-    x test inject http "$(x wsroot)"
+    local _test_inject_path
+    _test_inject_path="$(x wsroot)"
+    x test inject "${_test_inject_path##*/}" "$_test_inject_path"
     x test "$@"
 }
 
