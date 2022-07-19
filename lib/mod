@@ -136,9 +136,7 @@ ___x_cmd_yanfa_mod_wc(){
 }
 
 ___x_cmd_yanfa_mod_test()(
-    local inject_path
-    inject_path="$(x wsroot)"
-    x test inject "${inject_path##*/}" "$inject_path";
+    x test inject "${1:-Provide module}" "$(x wsroot)"; shift
     x test "$@"
 )
 
