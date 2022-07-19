@@ -135,12 +135,12 @@ ___x_cmd_yanfa_mod_wc(){
     ___x_cmd_yanfa_mod_lsfile "$@" | xargs wc | sort -n -r | less
 }
 
-___x_cmd_yanfa_mod_test(){
+___x_cmd_yanfa_mod_test()(
     local _test_inject_path
     _test_inject_path="$(x wsroot)"
     x test inject "${_test_inject_path##*/}" "$_test_inject_path"
     x test "$@"
-}
+)
 
 # EndSection
 
