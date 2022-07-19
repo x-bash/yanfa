@@ -136,7 +136,6 @@ ___x_cmd_yanfa_mod_wc(){
 }
 
 ___x_cmd_yanfa_mod_test()(
-    x:info "$*  $#"
     x test inject "${1:?Provide module}" "$(x wsroot)"; shift
     x test "$@"
 )
