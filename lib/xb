@@ -44,8 +44,7 @@ ___x_cmd_yanfa_xb_foreach()(
     x mcd "$dir/x-bash" || return 1
     ___x_cmd_yanfa_xb_ls | while read -r mod; do
         x job put 10 org=x-bash name="$mod" "$@"
-        echo "$mod"
-        x job active
+        "Current Working: "x job active
     done | cat
 
     # x job wait
