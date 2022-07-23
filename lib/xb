@@ -44,7 +44,6 @@ ___x_cmd_yanfa_xb_foreach()(
     x mcd "$dir/x-bash" || return 1
     ___x_cmd_yanfa_xb_ls | while read -r mod; do
         x job put "$___X_CMD_YANFA_CONCURRENCY" org=x-bash name="$mod" "$@"
-        printf "Current Active Size: %s\n" "$(x job active)"
     done | cat
 
     # x job wait
