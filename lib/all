@@ -1,5 +1,7 @@
 # shellcheck shell=sh disable=SC3043,2120 # xrc
 
+### This code tell us how we practice concurrent programming in the early stage. Before we figure out using cat instead of wait/job_wait.
+
 # Section: git
 
 ___x_cmd_yanfa_all(){
