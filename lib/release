@@ -55,16 +55,22 @@ ___x_cmd_yanfa_release_pub()(
     # set -o errexit
     if {
         yanfa:info "update"
-        ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}"
-        # return
+        ___x_cmd_yanfa_release_update "${CONCURRENCY:-7}" || {
+            local code=$?;  yanfa:info "update fail exit: $?"
+            false
+        }
     } && {
         yanfa:info "create tgz"
-        ___x_cmd_yanfa_release_tgz "$@"
-        yanfa:info "create tgz exit: $?"
+        ___x_cmd_yanfa_release_tgz "$@" || {
+            local code=$?;  yanfa:info "create tgz exit: $code"
+            false
+        }
     } && {
         yanfa:info "Add && Commit && Push"
-        git add . && git commit -m ... && ___x_cmd_yanfa_ws_push
-        yanfa:info "Add && Commit && Push exit: $?"
+        if ! git add . && git commit -m ... && ___x_cmd_yanfa_ws_push; then
+            local code=$?;  yanfa:info "Add && Commit && Push exit: $code"
+            false
+        fi
     }; then
         yanfa:info "OK"
     else
