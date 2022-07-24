@@ -34,8 +34,8 @@ ___x_cmd_yanfa_xc_foreach()(
 )
 
 ___x_cmd_yanfa_xc_ls___one(){
-    curl https://gitee.com/x-cmd/x-cmd/raw/main/repolist 2>/dev/null | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
-    ___x_cmd_httpget_gitx_official repolist "|" awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
+    # curl https://gitee.com/x-cmd/x-cmd/raw/main/repolist 2>/dev/null | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
+    ___x_cmd_httpget_gitx_official repolist | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
 }
 
 ___x_cmd_yanfa_xc_ls(){
