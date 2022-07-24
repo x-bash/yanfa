@@ -242,7 +242,7 @@ ___x_cmd_yanfa_mod(){
     fi
 
     param:subcmd ___x_cmd_yanfa                             \
-        init    "init"
+        init        "init"
     param:subcmd:try
 
     param:subcmd ___x_cmd_yanfa_ws                          \
