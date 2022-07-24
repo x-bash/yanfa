@@ -162,10 +162,10 @@ ___x_cmd_yanfa_mod_devi(){
     id="$(docker container ls -a -f name=ws-x-bash-dev --quiet)"
 
     if [ -z "$id" ]; then
-        docker run -it --network host --name "$name" \
-            -v "$HOME/.ssh:/root/.ssh" \
-            -v "$(x wsroot):/$name}" \
-            -v "$(x wsroot):/ws" \
+        docker run -it --network host --name "$name"    \
+            -v "$HOME/.ssh:/root/.ssh"                  \
+            -v "$(x wsroot):/$name}"                    \
+            -v "$(x wsroot):/ws"                        \
             xcmd/alpine-dev bash
     else
         docker container start "$id"
