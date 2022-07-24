@@ -2,49 +2,35 @@
 
 # Section: main
 ___x_cmd_yanfa_release(){
-
     if [ -f "$(x wsroot)/.x-cmd/$1" ]; then
         x _ws "$@"
         return
     fi
 
-    param:subcmd ___x_cmd_yanfa                    \
-        init    "init"
+    x:trace yanfa/relesae "$@"
+
+    param:subcmd    ___x_cmd_yanfa                  \
+        init        "init"
     param:subcmd:try
 
-    param:subcmd ___x_cmd_yanfa_ws                  \
-        pull        "pull"                         \
+    param:subcmd    ___x_cmd_yanfa_ws               \
+        pull        "pull"                          \
         push        "push"                          \
         name        "get workspace name from git config"
     param:subcmd:try
 
-    param:dsl <<A
-subcommand:
-    update          "update or add module"
-    pub             "publish the package"
-    lsmod           "ls module"
-    lsfile          "ls file"
-    wc              "count"
+    param:subcmd    ___x_cmd_yanfa_release          \
+        update          "update or add module"      \
+        pub             "publish the package"       \
+        lsmod           "ls module"                 \
+        lsfile          "ls file"                   \
+        wc              "count"                     \
+        tgz             "compress modules of core/all/<special-release> into <name>.tgz"    \
+        7z              "compress modules of 7z"
+    param:subcmd:try
 
-    tgz             "compress modules of core/all/<special-release> into <name>.tgz"
-    7z              "compress modules of 7z"
-A
     param:run
-
-    # tar             "compress modules"
-    # install         "install all modules"
-
-    x:trace yanfa/relesae "$@"
-
-    if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_yanfa_release help
-        return 1
-    fi
-
-    if command -v "___x_cmd_yanfa_release_${PARAM_SUBCMD}" >/dev/null; then
-        "___x_cmd_yanfa_release_${PARAM_SUBCMD}" "$@"
-    fi
-
+    ___x_cmd_yanfa_release help
 }
 # EndSection
 
