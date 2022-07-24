@@ -137,7 +137,7 @@ ___x_cmd_yanfa_release_update(){
 
     yanfa:debug "Starting CPFILE"
     ___x_cmd_yanfa_release_cpfile
-    yanfa:debug "FINISIH CPFILE exit: $?"
+    local code=$?; yanfa:debug "FINISIH CPFILE exit: $code"
 }
 
 # EndSection
