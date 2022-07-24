@@ -22,19 +22,14 @@ A
     "___x_cmd_yanfa_xb_${PARAM_SUBCMD}" "$@"
 }
 
-
-____x_cmd_yanfa_xb_commit(){
-    ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit
+___x_cmd_yanfa_xb_ls(){
+    param:void
+    ___x_cmd_yanfa_mod_ls "$@"
 }
 
-
-___x_cmd_yanfa_xb_update(){
-    ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update
-}
-
-____x_cmd_yanfa_xb_push(){
-    ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push
-}
+____x_cmd_yanfa_xb_commit(){        ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit;     }
+___x_cmd_yanfa_xb_update(){         ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update;     }
+____x_cmd_yanfa_xb_push(){          ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push;       }
 
 ___x_cmd_yanfa_xb_foreach()(
     local dir="${1:-$HOME}"; shift
@@ -52,10 +47,5 @@ ___x_cmd_yanfa_xb_foreach()(
     # x job wait
     # sleep 3 # We have to reconsider it
 )
-
-___x_cmd_yanfa_xb_ls(){
-    param:void
-    ___x_cmd_yanfa_mod_ls "$@"
-}
 
 ## EndSection
