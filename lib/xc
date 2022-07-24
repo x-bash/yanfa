@@ -20,9 +20,9 @@ A
     "___x_cmd_yanfa_xc_${PARAM_SUBCMD}" "$@"
 }
 
-____x_cmd_yanfa_xc_commit(){                    ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit;     }
-___x_cmd_yanfa_xc_update()(                     ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update;     )
-____x_cmd_yanfa_xc_push(){                      ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push;       }
+___x_cmd_yanfa_xc_commit(){         ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit;     }
+___x_cmd_yanfa_xc_update()(         ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update;     )
+___x_cmd_yanfa_xc_push(){           ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push;       }
 
 ___x_cmd_yanfa_xc_foreach()(
     local dir="${1:-$HOME}"; shift
