@@ -11,8 +11,6 @@ subcommand:
     push        "clone or update all repos"
 A
     param:run
-    # push        "push"
-    # pull        "pull"
 
     if [ -z "${PARAM_SUBCMD}" ]; then
         ___x_cmd_yanfa_xb_update
