@@ -40,8 +40,7 @@ ___x_cmd_yanfa_xc_ls___one(){
 
 ___x_cmd_yanfa_xc_ls(){
     param:void
-    local i
-    for i in 1 2 3; do
+    local i; for i in 1 2 3; do
         ! ___x_cmd_yanfa_xc_ls___one || return 0
         sleep 1
     done
