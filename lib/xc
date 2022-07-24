@@ -33,15 +33,10 @@ ___x_cmd_yanfa_xc_foreach()(
     ___x_cmd_yanfa_xc_ls | x readl mod -- eval x job put "$___X_CMD_YANFA_CONCURRENCY" org=x-cmd name="\$mod" "$@" | cat
 )
 
-___x_cmd_yanfa_xc_ls___one(){
-    # curl https://gitee.com/x-cmd/x-cmd/raw/main/repolist 2>/dev/null | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
-    ___x_cmd_httpget_gitx_official repolist | awk '{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
-}
-
 ___x_cmd_yanfa_xc_ls(){
     param:void
-    x retry --max 3 ___x_cmd_yanfa_xc_ls___one
+    local code='{ if ($0 ~ /^\+/) gsub(/^\+/, "", $0); print $0 }'
+    x retry --max 3 eval '___x_cmd_httpget_gitx_official repolist | awk "$code"'
 }
-
 
 ## EndSection
