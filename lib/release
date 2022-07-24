@@ -52,10 +52,14 @@ ___x_cmd_yanfa_release_pub()(
             false
         }
     } && {
-        yanfa:info "Add && Commit && Push"
-        if ! git add . && git commit -m ... && ___x_cmd_yanfa_ws_push; then
-            local code=$?;  yanfa:info "Add && Commit && Push exit: $code"
-            false
+        if [ -n "$NO_UPLOAD" ]; then
+            yanfa:info "No Upload. Skip Add && Commit && Push"
+        else
+            yanfa:info "Add && Commit && Push"
+            if ! git add . && git commit -m ... && ___x_cmd_yanfa_ws_push; then
+                local code=$?;  yanfa:info "Add && Commit && Push exit: $code"
+                false
+            fi
         fi
     }; then
         yanfa:info "OK"
