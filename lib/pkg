@@ -198,26 +198,26 @@ ___x_cmd_yanfa_pkg(){
         return
     fi
 
-    param:subcmd ___x_cmd_yanfa                    \
-        init    "init"
+    param:subcmd ___x_cmd_yanfa                                 \
+        init            "init"
     param:subcmd:try
 
-    param:subcmd ___x_cmd_yanfa_ws                  \
-        pull        "pull"                         \
-        push        "push"                          \
-        name        "get workspace name from git config"
+    param:subcmd ___x_cmd_yanfa_ws                              \
+        pull            "pull"                                  \
+        push            "push"                                  \
+        name            "get workspace name from git config"
     param:subcmd:try
 
-    param:subcmd ___x_cmd_yanfa_pkg \
-        install         "install all modules"               \
-        update          "update or add module"              \
-        pub0            "publish the package"               \
-        pub             "publish the package"               \
-        lsmod           "ls module"                         \
-        lsfile          "lsfile"                            \
-        wc              "count"                             \
+    param:subcmd ___x_cmd_yanfa_pkg                             \
+        install         "install all modules"                   \
+        update          "update or add module"                  \
+        pub0            "publish the package"                   \
+        pub             "publish the package"                   \
+        lsmod           "ls module"                             \
+        lsfile          "lsfile"                                \
+        wc              "count"                                 \
         tgz             "compress modules of core/all/<special-release> into <name>.tgz" \
-        tar             "compress modules"                  \
+        tar             "compress modules"                      \
         7z              "compress modules of 7z"
     param:subcmd:try
 
