@@ -83,7 +83,7 @@ ___x_cmd_yanfa_all_map(){
 #     '
 # }
 
-____x_cmd_yanfa_git_update(){
+___x_cmd_yanfa_git_update(){
     if [ -d "$name" ]; then
         ( cd "$name" && git pull && git pull origin main )
     else
@@ -92,27 +92,27 @@ ____x_cmd_yanfa_git_update(){
 }
 
 ___x_cmd_yanfa_all_update()(
-    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update
+    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ___x_cmd_yanfa_git_update
 )
 
-____x_cmd_yanfa_git_commit()(
+___x_cmd_yanfa_git_commit()(
     cd "$name"
     git commit -m "$MSG"
 )
 
 ____x_cmd_yanfa_all_commit(){
     local MSG="${1:-...}"; shift
-    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit
+    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ___x_cmd_yanfa_git_commit
 }
 
-____x_cmd_yanfa_git_push()(
+___x_cmd_yanfa_git_push()(
     cd "$name"
     xws push
 )
 
 ____x_cmd_yanfa_all_push(){
     local MSG="${1:-...}"; shift
-    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push
+    ___x_cmd_yanfa_all_foreach "${1:-$HOME}" ___x_cmd_yanfa_git_push
 }
 
 ___x_cmd_yanfa_all_foreach()(
