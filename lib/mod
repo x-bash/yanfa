@@ -251,7 +251,7 @@ ___x_cmd_yanfa_mod(){
         name        "get workspace name from git config"
     param:subcmd:try
 
-    param:subcmd ___x_cmd_yanfa_mod_                        \
+    param:subcmd ___x_cmd_yanfa_mod                         \
         ls          "ls mod"                                \
         wc          "wc"                                    \
         devi        "container"                             \
