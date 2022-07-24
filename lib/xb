@@ -27,9 +27,9 @@ ___x_cmd_yanfa_xb_ls(){
     ___x_cmd_yanfa_mod_ls "$@"
 }
 
-____x_cmd_yanfa_xb_commit(){        ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit;     }
+___x_cmd_yanfa_xb_commit(){         ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_commit;     }
 ___x_cmd_yanfa_xb_update(){         ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_update;     }
-____x_cmd_yanfa_xb_push(){          ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push;       }
+___x_cmd_yanfa_xb_push(){           ___x_cmd_yanfa_xb_foreach "${1:-$HOME}" ____x_cmd_yanfa_git_push;       }
 
 ___x_cmd_yanfa_xb_foreach()(
     local dir="${1:-$HOME}"; shift
