@@ -257,7 +257,7 @@ ___x_cmd_yanfa_mod(){
         devi        "container"                             \
         tgz         "package"                               \
         test        "test"                                  \
-        install      "cp file to home folder"               \
+        install     "cp file to home folder"                \
         lsfile      "ls file to p"                          \
         lsfile0     "ls file to p"
 
