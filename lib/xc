@@ -3,21 +3,15 @@
 # Section: git
 
 ___x_cmd_yanfa_xc(){
-    param:dsl <<A
-subcommand:
-    ls          "list modules"
-    update      "clone or update all repos"
-    commit      "clone or update all repos"
-    push        "clone or update all repos"
-A
+    param:subcmd ___x_cmd_yanfa_xc \
+        ls          "list modules"                  \
+        update      "clone or update all repos"     \
+        commit      "clone or update all repos"     \
+        push        "clone or update all repos"
+
+    param:subcmd:try
     param:run
-
-    if [ -z "${PARAM_SUBCMD}" ]; then
-        ___x_cmd_yanfa_xc_update
-        return
-    fi
-
-    "___x_cmd_yanfa_xc_${PARAM_SUBCMD}" "$@"
+    ___x_cmd_yanfa_xc_update
 }
 
 ___x_cmd_yanfa_xc_commit(){         ___x_cmd_yanfa_xc_foreach "${1:-$HOME}" ___x_cmd_yanfa_git_commit;     }
